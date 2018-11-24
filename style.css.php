@@ -20,6 +20,15 @@ header("Content-type: text/css");
   }
 }
 
+input {
+    width: 60px;
+}
+
+select {
+	width: 220px;
+
+}
+
 .option-input {
   -webkit-appearance: none;
   -moz-appearance: none;
