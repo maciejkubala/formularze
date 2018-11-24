@@ -29,6 +29,7 @@
         </select><br/>
         <input type="submit" class="option-input" style="width: 100px;" value="Zatwierdź">
         </form>';
+        echo "maciek";
     }
     ?>
    
