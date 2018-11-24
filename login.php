@@ -27,16 +27,28 @@
 
     <?php
     include 'header.php';
-
+    include 'polaczenie_do_bazy.php';
+    
     echo '<p style="color:red;" id="index_error_message"></p>';
 
+    $sql_formularze = 'SELECT idFormularze, Nazwa FROM formularze';
+    $result_formularze = $conn->query($sql_formularze);
+    
     if (! empty($_POST["type"]) && $_POST["type"] == "student") {
-        echo '<form method="post" action="formularz.php" name="formularzIndeks">
-            	<label for="indeks">Numer indeksu:</label>
-            	<input id="indeks" name="indeks" type="text" required><br/>
-                <input type="hidden"id="type" name="type" value="' . $_POST["type"] . '">
-            	<input type="button" class="option-input" style="width: 100px;" value="Zatwierdź" onclick="sprawdz()">                    
-              </form>';
+        echo '<form method="post" action="formularz.php" name="formularzIndeks">';
+        echo '    	<label for="indeks">Numer indeksu:</label>';
+        echo '    	<input id="indeks" name="indeks" type="text" required><br/>';
+        echo '<br/>';
+        echo '      <select id="formularz_id" name="formularz_id">';
+        while (     $row = $result_formularze->fetch_assoc()) { //
+                    $id = $row['idFormularze'];
+                    $nazwa = $row['Nazwa'];
+            echo '<option value="' . $id . '">' . $nazwa . '</option>';
+        }
+        echo '      </select><br/>';
+        echo '      <input type="hidden"id="type" name="type" value="' . $_POST["type"] . '">';
+        echo '    	<input type="button" class="option-input" style="width: 100px;" value="Zatwierdź" onclick="sprawdz()">';                    
+        echo '</form>';
     } else {
         $url = "logowanie.php";
         header("Location: " . $url);

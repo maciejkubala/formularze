@@ -75,13 +75,14 @@ if ($result_sqlIdStudenta->num_rows > 0) {
     echo '<h2 style="color:red;">Student o numerze indeksu : ' . $student . ' już istnieje w bazie!</h2>';
     
 } else {
-
+    $formularz_id = $_POST["formularz_id"];
+    
     echo '<div>';
     // MAIN CODE STARTS HERE
     // poczatek strony
     echo "<h2>WITAJ STUDENCIE, WYPEŁNIJ ANKIETĘ</h2>";
     // pobierz liste pytan
-    $sql = "SELECT idPytania, Tresc FROM Pytania";
+    $sql = "SELECT idPytania, Tresc, Typ, ilosc_wyborow FROM v_pytania_z_formularza where idFormularze = " .$formularz_id;
     $result = $conn->query($sql);
 
     if (! $result) {
