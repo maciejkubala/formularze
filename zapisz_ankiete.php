@@ -93,15 +93,7 @@
                
             
             
-            
-           /*  $sugestia = $_POST["sugestia"];
-            if (isset($_POST['sugestia'])){ 
-                            $sql_insert_sugestia = 'INSERT INTO `sugestie` (`id_sugestii`, `tresc`)
-                            VALUES(NULL,'.$sugestia.')';
-                            $insert_result_sugestia = $conn->query($sql_insert_sugestia); */
-                        }
-                        
-                    echo $_POST['type'];
+       
                     echo ("<h2>Ankietę zapisano prawidłowo!<br/></h2>");
                     //przycisk do powrotu do index.php
                     echo '<form method="post" action="sugestie.php">
@@ -116,7 +108,7 @@
             echo('<a href="index.php" class="option-input" style="width: 150px; text-decoration: none;">Wroc na poczatek</a>');
         
 
-    
+    }
     ?>
 
     <!-- Optional JavaScript -->

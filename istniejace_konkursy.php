@@ -25,7 +25,7 @@
         }
         
         //NAZWA FORMULARZA MAKS PUNKTOW 
-        $select_nazwa_konkursu= 'SELECT Nazwa, maks_punktow
+        $select_nazwa_konkursu= 'SELECT Nazwa, maks_punktow, Opis_Stanowiska
                                      FROM konkursy_pracodawcow
                                     WHERE idKonkursy_Pracodawcow= ' . $konkurs_id;
         
@@ -35,9 +35,9 @@
         $row = mysqli_fetch_assoc($result_nazwa_konkursu);
         $maks_punktow = $row['maks_punktow'];
         $nazwa_konkursu = $row['Nazwa'];
+        $opis_stanowiska =$row["Opis_Stanowiska"];
+     
         
-      
-            
         // lita studentow
         
         $ilosc = $_POST['ilosc_osob'];
@@ -57,7 +57,18 @@
         $row = mysqli_fetch_assoc($sql_maks_punktow_result);
         $maks_punktow = $row['maks_punktow']; */
         
-        echo'<h3>WYBRANY FORMULARZ: "'.$nazwa_konkursu.'"</h3>';
+
+        
+/*         $select_opis_stanowiska = 'SELECT Opis_Stanowiska
+                                     FROM konkursy_pracodawcow
+                                    WHERE idKonkursy_Pracodawcow = ' . $konkurs_id . '';
+                                    
+        $result_opis_stanowiska = $conn->query($select_opis_stanowiska);
+        
+ */        
+        
+        echo'<h3>WYBRANY KONKURS: "'.$nazwa_konkursu.'"</h3>';
+        echo '<h4>Opis konkursu: '. $opis_stanowiska.'</h4>';
         
         
         echo '<table style="width:50%">

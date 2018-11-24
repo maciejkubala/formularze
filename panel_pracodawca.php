@@ -13,12 +13,7 @@
  
 </head>
 <body>
-<!--     <script> -->
-//         function myFunction() {
-//             var x = document.getElementById("konkurs_id").value;
-//             document.getElementById("opis_konkursu").innerHTML = "You selected: " + x;
-//         }
- </script>
+
      <?php
     // Towrzy lub wznawia bier0zącą sesję
     session_start();
@@ -44,26 +39,21 @@
             echo '<form method="post" action="istniejace_konkursy.php">';
             echo '<label for="konkurs_id">Twoje konkursy:</label>';
             echo '<select id="konkurs_id" name="konkurs_id">';
-            while (     $row = $result->fetch_assoc()) { //
+            while (     $row = $result->fetch_assoc()) { 
                 $id = $row['idKonkursy_Pracodawcow'];
-                $nazwa = $row['Nazwa'];
+                $nazwa = $row['Nazwa']; 
                 echo '<option value="' . $id . '">' . $nazwa . '</option>';
             }
             echo '</select><br/>';
-            echo '<label for="ilosc_osob">Ile osob wyswietlic?</label>';
+            echo '<label for="ilosc_oso b">Ile osob wyswietlic?</label>';
             echo '<input type="number" id="ilosc_osob" name="ilosc_osob" required><br/>';
             echo '<input type="submit" class="option-input" style="width: 100px;" value="Zatwierdz">';
             echo '</form>';
             echo "<br><br><br><br>";
      
         }
-    
-        
-        
-//         echo '<p id="opis_konkursu">k </p>';
-//         //wyswietl opis formularza
-//         echo '<p><h3>Opis Konkursu:</h3></p>';
-       
+        }
+
      
         // wybierz formularz i wpisz nazwe konkursu
         $sql_formularze = 'SELECT idFormularze, Nazwa FROM formularze';
@@ -92,7 +82,7 @@
                         </form>';
         
         echo '</div>';
-    }
+    
 
     ?>
     
