@@ -22,7 +22,7 @@
 					return;
 				}
 				f.submit();	
-        }
+    		}
     </script>    
 
     <?php
@@ -35,7 +35,7 @@
     $result_formularze = $conn->query($sql_formularze);
     
     if (! empty($_POST["type"]) && $_POST["type"] == "student") {
-        echo '<form method="post" action="formularz.php" name="formularzIndeks">';
+        echo '<form method="post" action="formularz.php" name="formularzIndeks" onkeypress="return event.keyCode != 13;">';
         echo '    	<label for="indeks">Numer indeksu:</label>';
         echo '    	<input id="indeks" maxlength="6" name="indeks" type="text" required><br/>';
         echo '<br/>';

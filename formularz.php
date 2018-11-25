@@ -53,7 +53,7 @@ function generujPytanie($v_idPytania, $v_connection, $v_typ, $v_ilosc_wyborow)
             if ($v_typ == 'C') {
                 // jesli inne dodaj input box
                 if($tresc == "Inne") {
-                    echo '<input type="checkbox" class="option-input limited-check-' . $v_idPytania . '"  id="inne' . $v_idPytania . '" name="inne' . $v_idPytania . '[]" value="' . $idMozliwe_Odpowiedzi . '" onclick="javascript:showHideInput' . $v_idPytania . '();">' . $tresc . '<br/>';
+                    echo '<input type="checkbox" class="option-input limited-check-' . $v_idPytania . '"  id="inne' . $v_idPytania . '" name="' . $v_idPytania . '[]" value="' . $idMozliwe_Odpowiedzi . '" onclick="javascript:showHideInput' . $v_idPytania . '();">' . $tresc . '<br/>';
                     echo '<div id="div' . $v_idPytania . '" style="display:none"><input type="text" style="width:500px;" id="inne' . $v_idPytania . 'odp' . $idMozliwe_Odpowiedzi . '" name="inne' . $v_idPytania . 'odp' . $idMozliwe_Odpowiedzi . '"></div>';
                 } else {
                     echo '<input type="checkbox" class="option-input limited-check-' . $v_idPytania . '"  id="' . $v_idPytania . '" name="' . $v_idPytania . '[]" value="' . $idMozliwe_Odpowiedzi . '">' . $tresc . '<br/>';
@@ -151,9 +151,6 @@ if ($result_sqlIdStudenta->num_rows > 0) {
     // poczatek strony
     echo "<h2>WITAJ STUDENCIE, WYPEŁNIJ ANKIETĘ</h2>";
     
-    // tekst do walidacji pytań
-    echo '<p style="color:red;" id="errMessage"></p>';
-
     // pobierz liste pytan
     $sql = "SELECT idPytania, Tresc, Typ, ilosc_wyborow FROM v_pytania_z_formularza where idFormularze = " .$formularz_id;
     $result = $conn->query($sql);
@@ -184,12 +181,17 @@ if ($result_sqlIdStudenta->num_rows > 0) {
         echo "0 results";
     }
     echo '<input type="hidden" id="type" name="type" value="' . $_POST["type"] . '">';
+    // tekst do walidacji pytań
+    echo '<p style="color:red;" id="errMessage"></p>';
+
     echo '<input type="submit" id="przycisk" class="option-input" style="width: 100px;" value="Zatwierdz">';
     echo '</form>';
     echo '</div>';
     echo '</div>';
      }
  
+     
+     
      //generuj javaskrpyty do ilosci zaznaczenia checkboxow
      echo '<script>';
      $sql_checkboxy = "SELECT idPytania, ilosc_wyborow FROM v_pytania_z_formularza where idFormularze = " .$formularz_id . " and Typ = 'C'";

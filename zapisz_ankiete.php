@@ -12,11 +12,12 @@
   <body>
     
     <?php 
-    session_start();
+     session_start();
     
     include 'header.php';
     include 'polaczenie_do_bazy.php';
-
+    INCLUDE 'LOGOUT.PHP';
+    
    
    
   /*  $NAME= $_FILES['Plik_Do_CV']['name'];
@@ -53,11 +54,6 @@
     // zapytanie o odpowiedzi do pytania -> patrz parameter idPytania
     $sqlIdStudenta = "SELECT idStudenci FROM studenci WHERE Nr_Indeksu = ".$_SESSION['student'];
     
-    echo'<form action="cv.php" method="post">
-    <input type="submit" name="submit"></>
-    <input type="hidden" id="type" name="type" value="' . $_SESSION['student'] . '">;
-    </form>';  
-    
     // wykonac sql
     $resultIdStudenta = $conn->query($sqlIdStudenta);
     
@@ -91,43 +87,98 @@
     }
     
     if(!empty($_POST)) {
-//         echo("Student: ".$id."<br/>");
-            //zapisz odpowiedzi studenta z ankiety
-            foreach($_POST as $key => $value) { 
-//                 echo("key: ".$key." value: ".$value."<br/>");
-//JEST TABLICA RADIONVS CHECKBOX
-                if(is_array($value)){
-                    foreach($value as $odpowiedz){
-                        $sql_insert = 'INSERT INTO odpowiedzi_studentow (`Studenci_idStudenci`, `Pytania_Z_Formularzy_idPytania_Z_Formularzy`, `Mozliwe_Odpowiedzi_idMozliwe_Odpowiedzi`)
-                            VALUES('.$id.','.$key.','.$odpowiedz.')';
-                        $insert_result = $conn->query($sql_insert);
-                    }
-                 
-                }else{
-                    //RADIOBUTTON
-                $sql_insert = 'INSERT INTO odpowiedzi_studentow (`Studenci_idStudenci`, `Pytania_Z_Formularzy_idPytania_Z_Formularzy`, `Mozliwe_Odpowiedzi_idMozliwe_Odpowiedzi`)
-                            VALUES('.$id.','.$key.','.$value.')';
+        //echo("Student: ".$id."<br/>");
+        //zapisz odpowiedzi studenta z ankiety
+        foreach($_POST as $key => $value) {
+//             echo '<br>';
+//             echo '<br>';
+//             echo '<br>';
+//             echo("key: ".$key." value: ".$value."<br/>");
+            
+            if((substr($key, 0, 4) == "inne") && is_array($value)) {
+                // pomiń checkbox z pytania inne
+                // pytanie inne bedzie zapisane z textboxa
+            }
+            elseif(substr($key, 0, 4) == "inne") {
+//                 echo '<br>';
+//                 echo 'inne';
+                //INNE
+                $id_pytania = substr($key, 4, strpos($key, 'o') - 4);
+//                 echo 'id_pytania = ' . $id_pytania;
+//                 echo '<br>';
+                $id_odpowiedzi = substr($key, strpos($key, 'o') + 3, strlen($key) - (strpos($key, 'o') + 3));
+//                 echo 'id_odpowiedzi = ' . $id_odpowiedzi;
+                $sql_insert = 'INSERT INTO odpowiedzi_studentow (`Studenci_idStudenci`, `Pytania_Z_Formularzy_idPytania_Z_Formularzy`, `Mozliwe_Odpowiedzi_idMozliwe_Odpowiedzi`, `Odpowiedz_tekstowa`)
+                                VALUES('.$id.','.$id_pytania.', ' . $id_odpowiedzi . ', "'.$value.'")';
+//                 echo '<br>';
+//                 echo $sql_insert;
                 $insert_result = $conn->query($sql_insert);
+                if (! $insert_result) {
+                    trigger_error('Invalid query: ' . $conn->error);
+                }
+                
             }
+            elseif (is_array($value)){
+//                 echo '<br>';
+//                 echo 'checkbox';
+                //CHECKBOXY
+                foreach($value as $odpowiedz){
+                    $sql_insert = 'INSERT INTO odpowiedzi_studentow (`Studenci_idStudenci`, `Pytania_Z_Formularzy_idPytania_Z_Formularzy`, `Mozliwe_Odpowiedzi_idMozliwe_Odpowiedzi`)
+                            VALUES('.$id.','.$key.','.$odpowiedz.')';
+                    $insert_result = $conn->query($sql_insert);
+                    if (! $insert_result) {
+                        trigger_error('Invalid query: ' . $conn->error);
+                    }
+                }
             }
-               
+            elseif (is_numeric($value)){
+//                 echo '<br>';
+//                 echo 'radio';
+                //RADIOBUTTON
+                $sql_insert = 'INSERT INTO odpowiedzi_studentow (`Studenci_idStudenci`, `Pytania_Z_Formularzy_idPytania_Z_Formularzy`, `Mozliwe_Odpowiedzi_idMozliwe_Odpowiedzi`)
+                                VALUES('.$id.','.$key.','.$value.')';
+                $insert_result = $conn->query($sql_insert);
+                if (! $insert_result) {
+                    trigger_error('Invalid query: ' . $conn->error);
+                }
+            }
+        }
            // ECHO  $_POST["type"];
-                    echo ("<h2>Ankietę zapisano prawidłowo!<br/></h2>");
-                    //przycisk do powrotu do index.php
-                    echo '<form method="post" action="sugestie.php">
-                        <label for="sugestia">Jesli masz jakies uwagi/pytania/sugestie napisz do nas!</label>
-                        <textarea name="sugestia" id"sugestia" rows="5" cols="40"></textarea>
-                        <input type="hidden" id="type" name="type" value="' . $_POST["type"]. '">
-                        <input type="submit" class="option-input" style="width: 100px;" value="Wyslij">
-                        </form>';
+                    
+                    
+//                     echo'<form action="cv.php" method="post">
+//                         <input type="submit" name="submit"></>
+//                         <input type="hidden" id="type" name="type" value="' . $_SESSION['student'] . '">;
+//                         </form>';
+                    
+                    
                   
             
             
-            echo('<a href="index.php" class="option-input" style="width: 150px; text-decoration: none;">Wroc na poczatek</a>');
+//             echo('<a href="index.php" class="option-input" style="width: 150px; text-decoration: none;">Wroc na poczatek</a>');
         
 
     }
+
+    echo ("<h2>Ankietę zapisano prawidłowo!<br/></h2>");
     
+    echo '<br>';
+    echo '<form method="post" action="sugestie.php">
+                        <label for="sugestia">Jesli masz jakies uwagi/pytania/sugestie napisz do nas!</label>
+                        <textarea name="sugestia" id"sugestia" rows="5" cols="40"></textarea>
+                        <input type="hidden" id="type" name="type" value="' . $_POST["type"]. '">
+                        <br>
+                        <input type="submit" class="option-input" style="width: 100px;" value="Wyslij">
+                        </form>';
+    
+    echo '<br>';
+    echo '<br>';
+    echo '<br>';
+    echo 'Jesli chcesz wysłać CV załącz plik tutaj:';
+    
+    include 'cv.php';
+    
+
 /*     $select_update = 'UPDATE studenci
 	SET
 	Plik_Do_CV = "'.$NAME.'"

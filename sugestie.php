@@ -28,7 +28,12 @@
     
     }
     if(isset($_POST['type']) && $_POST['type'] == "student") {
-         echo('<a href="zapisz_ankiete.php" class="option-input" style="width: 150px; text-decoration: none;">Wroc na poczatek</a>');
+        echo '<form method="post" action="zapisz_ankiete.php">
+                        <input type="hidden" id="type" name="type" value="' . $_POST["type"]. '">
+                        <input type="submit" class="option-input" style="width: 100px;" value="Wróć">
+              </form>';
+        
+//          echo('<a href="zapisz_ankiete.php" class="option-input" style="width: 150px; text-decoration: none;">Wroc na poczatek</a>');
     } else{
          echo('<a href="panel_pracodawca.php" class="option-input" style="width: 150px; text-decoration: none;">Wroc do panelu pracodawcy</a>');
      } 
