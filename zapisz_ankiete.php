@@ -11,29 +11,52 @@
   </head>
   <body>
     
-    
     <?php 
     session_start();
     
     include 'header.php';
     include 'polaczenie_do_bazy.php';
-    //-------------------------------
-/*     // POLACZENIE DO BAZY
-    $servername = "localhost";
-    $username = "root";
-    $password = "";
-    $dbname = "baza_formularzy";
-    
-    $conn = new mysqli($servername, $username, $password, $dbname);
-    
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
-    $conn->set_charset("utf8"); */
+
+   
+   
+  /*  $NAME= $_FILES['Plik_Do_CV']['name'];
+   
+   $TMP_NAME= $_FILES['Plik_Do_CV']['tmp_name'];
+   
+   $SUBMITBUTTON= $_POST['submit'];
+   
+   $POSITION= STRPOS($NAME, ".");
+   
+   $FILEEXTENSION= SUBSTR($NAME, $POSITION + 1);
+   
+   $FILEEXTENSION= STRTOLOWER($FILEEXTENSION); 
+   
+   $DESCRIPTION= $_POST['Opis_Pliku'];*/
+   
+   
+   
+/*    IF (ISSET($NAME)) {
+       
+       $PATH= 'pliki/';
+       
+       IF (!EMPTY($NAME)){
+           IF (MOVE_UPLOADED_FILE($TMP_NAME, $PATH.$NAME)) {
+               ECHO 'Plik został pobrany prawidłowo!';
+               
+           }
+       }
+   } */
+   
+   
     
     //znajdz id studenta o numerze inkdeksu z session
     // zapytanie o odpowiedzi do pytania -> patrz parameter idPytania
     $sqlIdStudenta = "SELECT idStudenci FROM studenci WHERE Nr_Indeksu = ".$_SESSION['student'];
+    
+    echo'<form action="cv.php" method="post">
+    <input type="submit" name="submit"></>
+    <input type="hidden" id="type" name="type" value="' . $_SESSION['student'] . '">;
+    </form>';  
     
     // wykonac sql
     $resultIdStudenta = $conn->query($sqlIdStudenta);
@@ -87,13 +110,8 @@
                 $insert_result = $conn->query($sql_insert);
             }
             }
-                  
-          
-           
                
-            
-            
-       
+           // ECHO  $_POST["type"];
                     echo ("<h2>Ankietę zapisano prawidłowo!<br/></h2>");
                     //przycisk do powrotu do index.php
                     echo '<form method="post" action="sugestie.php">
@@ -109,6 +127,23 @@
         
 
     }
+    
+/*     $select_update = 'UPDATE studenci
+	SET
+	Plik_Do_CV = "'.$NAME.'"
+	WHERE
+	idStudenci = '.$_SESSION['student'].'';
+    
+    
+    echo $select_update;
+    $RESULT= $conn->QUERY($select_update);
+    
+    
+    if (! $RESULT) {
+        trigger_error('Invalid query: ' . $conn->error);
+    }
+    
+    DIE(); */
     ?>
 
     <!-- Optional JavaScript -->
