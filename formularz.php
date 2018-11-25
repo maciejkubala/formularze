@@ -3,7 +3,7 @@
 <html lang="pl">
 <head>
 <link rel="stylesheet" type="text/css" href="style.css.php">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
 <body>
 
@@ -29,7 +29,7 @@ $conn->set_charset("utf8");
 // -------------------------------
 
 // na podstawie id pytania, pobierz do tego pytania odpowiedzi i wygeneruj kod html
-function generujPytanie($v_idPytania, $v_connection)
+function generujPytanie($v_idPytania, $v_connection, $v_typ, $v_ilosc_wyborow)
 {
 
     // zapytanie o odpowiedzi do pytania -> patrz parameter idPytania
@@ -40,29 +40,22 @@ function generujPytanie($v_idPytania, $v_connection)
 
     // jesli sql cos zwrocil
     if ($resultOdpowiedziDoPytania->num_rows > 0) {
-        // dla kazdego wiersza zwrĂłconego
+        // dla kazdego wiersza zwracanego
+        echo '<div>';
         while ($row = $resultOdpowiedziDoPytania->fetch_assoc()) {
             // z wiersza pobieramy wartosci
             $tresc = $row["Tresc"];
             $idMozliwe_Odpowiedzi = $row["idMozliwe_Odpowiedzi"];
 
-            if ($v_idPytania == 11 || $v_idPytania == 12 || $v_idPytania == 13) {
-                if ($v_idPytania == 12 || $v_idPytania == 13) {
-                    if ($v_idPytania == 12) {
-                        $additional_class = 'limited-check';
-                    } else {
-                        $additional_class = 'limited-checkbox';
-                    }
-                } else {
-                    $additional_class = '';
-                }
-                // TYP CHECKBOX/RADIOBUTTON KLASA , TABLICA
-                echo '<input type="checkbox" class="option-input ' . $additional_class . '"  id="' . $v_idPytania . '" name="' . $v_idPytania . '[]" value="' . $idMozliwe_Odpowiedzi . '" >' . $tresc . '<br/>';
-            } else {
-
+            // TYP CHECKBOX/RADIOBUTTON KLASA , TABLICA
+            if ($v_typ == 'C') {
+                echo '<input type="checkbox" class="option-input limited-check-' . $v_idPytania . '"  id="' . $v_idPytania . '" name="' . $v_idPytania . '[]" value="' . $idMozliwe_Odpowiedzi . '">' . $tresc . '<br/>';
+            } 
+            if ($v_typ == 'R') {
                 echo '<input type="radio" class="option-input radio" id="' . $v_idPytania . '" name="' . $v_idPytania . '" value="' . $idMozliwe_Odpowiedzi . '" >' . $tresc . '<br/>';
             }
         }
+        echo '</div>';
     }
 }
 
@@ -75,12 +68,53 @@ if ($result_sqlIdStudenta->num_rows > 0) {
     echo '<h2 style="color:red;">Student o numerze indeksu : ' . $student . ' już istnieje w bazie!</h2>';
     
 } else {
+
     $formularz_id = $_POST["formularz_id"];
+
     
+    // generuj javaskrypty do walidacji wypełnienia pól
+    echo '<script type="text/javascript">';
+    echo 'function checkFormData() {';
+    echo "\r\n";
+    $sql_idPytania = "SELECT idPytania, Tresc, Typ FROM v_pytania_z_formularza where idFormularze = " .$formularz_id;
+        $result_idPytania = $conn->query($sql_idPytania);
+        if ($result_idPytania->num_rows > 0) {
+            while ($row = $result_idPytania->fetch_assoc()) {
+
+                $checkbox_name = $row["idPytania"];
+                $pytanie = $row["Tresc"];
+                $typ = $row["Typ"];
+                
+                if ($typ == 'R') {
+                    echo ' if (!$(\'input[name=' . $checkbox_name .']:checked\').length > 0) {';
+                }
+                if ($typ == 'C') {
+                    echo ' if (!$(\'input[name="' . $checkbox_name .'[]"]:checked\').length > 0) {';
+                }
+                echo '  document.getElementById("errMessage").innerHTML = "Pytanie \"' . $pytanie . ' \" nie moze byc puste";';
+                echo '  return false;';
+                echo ' }';
+                echo "\r\n";
+                echo "\r\n";
+                
+            }
+        }
+        echo ' return true;';
+        echo '}';
+        echo "\r\n";
+        echo '</script>';
+        
+        
+        
+   
     echo '<div>';
     // MAIN CODE STARTS HERE
     // poczatek strony
     echo "<h2>WITAJ STUDENCIE, WYPEŁNIJ ANKIETĘ</h2>";
+    
+    // tekst do walidacji pytań
+    echo '<p style="color:red;" id="errMessage"></p>';
+
     // pobierz liste pytan
     $sql = "SELECT idPytania, Tresc, Typ, ilosc_wyborow FROM v_pytania_z_formularza where idFormularze = " .$formularz_id;
     $result = $conn->query($sql);
@@ -91,8 +125,8 @@ if ($result_sqlIdStudenta->num_rows > 0) {
     $_SESSION["student"] = $student;
 
     echo '<div>';
-    echo '<form id="ankieta_student" method="post" action="zapisz_ankiete.php">';
-    // jesli zapytanie zwrĂłcilo wiersze
+    echo '<form id="ankieta_student" name="ankieta_student" method="post" action="zapisz_ankiete.php" onsubmit="return checkFormData()">';
+    // jesli zapytanie zwrócilo wiersze
     if ($result->num_rows > 0) {
         // dopoki sa wiersze
         // wyswietl kazde pytanie
@@ -100,39 +134,50 @@ if ($result_sqlIdStudenta->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
 
             // wyswietl pytanie na stronie
-            echo $nr . ". " . $row["Tresc"] . "<br>";
+            echo $nr . ". " . $row["Tresc"];
             // wyswietl odpowiedzi do pytania
             $nr ++;
-            generujPytanie($row["idPytania"], $conn);
+            generujPytanie($row["idPytania"], $conn,  $row["Typ"], $row["ilosc_wyborow"]);
 
-            echo "<br>";
         }
 
-        echo "</table>";
     } else {
         echo "0 results";
     }
     echo '<input type="hidden" id="type" name="type" value="' . $_POST["type"] . '">';
-    echo '<input type="submit" class="option-input" style="width: 100px;" value="Zatwierdz">';
+    echo '<input type="submit" id="przycisk" class="option-input" style="width: 100px;" value="Zatwierdz">';
     echo '</form>';
     echo '</div>';
     echo '</div>';
-}
+     }
+ 
+     //generuj javaskrpyty do ilosci zaznaczenia checkboxow
+     echo '<script>';
+     $sql_checkboxy = "SELECT idPytania, ilosc_wyborow FROM v_pytania_z_formularza where idFormularze = " .$formularz_id . " and Typ = 'C'";
+     $result_checkboxy = $conn->query($sql_checkboxy);
+     if ($result_checkboxy->num_rows > 0) {
+         while ($row = $result_checkboxy->fetch_assoc()) {
+             
+             $idPytania = $row["idPytania"];
+             $ilosc_wyborow = $row["ilosc_wyborow"];
+             
+             echo '$(\'input.limited-check-' . $idPytania . '\').on(\'change\', function(evt){';
+             echo '    if($(\'input.limited-check-' . $idPytania . ':checked\').length > ' . $ilosc_wyborow .') {';
+             echo '      this.checked = false;';
+             echo '    }';
+             echo '});';
+             echo "\r\n";
+             echo "\r\n";
+             
+         }
+     }
+     
+     echo '</script>';
+     
+     
+     
 $conn->close();
+
 ?>
-<script>
-var limit = 4;
-$('input.limited-check').on('change', function(evt){
-	if($('input.limited-check:checked').length > limit) {
-		this.checked = false;
-		}	
-});
-	
-	$('input.limited-checkbox').on('change', function(evt){
-		if($('input.limited-checkbox:checked').length > limit) {
-			this.checked = false;
-			}	
-	});
-</script>
 </body>
 </html>
