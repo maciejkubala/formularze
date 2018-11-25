@@ -68,32 +68,65 @@
     }
     
     if(!empty($_POST)) {
-//         echo("Student: ".$id."<br/>");
+            //echo("Student: ".$id."<br/>");
             //zapisz odpowiedzi studenta z ankiety
             foreach($_POST as $key => $value) { 
-//                 echo("key: ".$key." value: ".$value."<br/>");
-//JEST TABLICA RADIONVS CHECKBOX
-                if(is_array($value)){
+                echo '<br>';
+                echo '<br>';
+                echo '<br>';
+                echo("key: ".$key." value: ".$value."<br/>");
+                echo 'substr($key, 0, 4)' . substr($key, 0, 4);
+                
+                if((substr($key, 0, 4) == "inne") && is_array($value)) {
+                    // pomiń checkbox z pytania inne
+                    // pytanie inne bedzie zapisane z textboxa
+                }
+                elseif(substr($key, 0, 4) == "inne") {
+                    echo '<br>';
+                    echo 'inne';
+                    //INNE
+                    $id_pytania = substr($key, 4, strpos($key, 'o') - 4);
+                    echo 'id_pytania = ' . $id_pytania;
+                    echo '<br>';
+                    $id_odpowiedzi = substr($key, strpos($key, 'o') + 3, strlen($key) - (strpos($key, 'o') + 3));
+                    echo 'id_odpowiedzi = ' . $id_odpowiedzi;
+                    $sql_insert = 'INSERT INTO odpowiedzi_studentow (`Studenci_idStudenci`, `Pytania_Z_Formularzy_idPytania_Z_Formularzy`, `Mozliwe_Odpowiedzi_idMozliwe_Odpowiedzi`, `Odpowiedz_tekstowa`)
+                                VALUES('.$id.','.$id_pytania.', ' . $id_odpowiedzi . ', "'.$value.'")';
+                    echo '<br>';
+                    echo $sql_insert;
+                    $insert_result = $conn->query($sql_insert);
+                    if (! $insert_result) {
+                        trigger_error('Invalid query: ' . $conn->error);
+                    }
+                    
+                }
+                elseif (is_array($value)){
+                    echo '<br>';
+                    echo 'checkbox';
+                    //CHECKBOXY
                     foreach($value as $odpowiedz){
                         $sql_insert = 'INSERT INTO odpowiedzi_studentow (`Studenci_idStudenci`, `Pytania_Z_Formularzy_idPytania_Z_Formularzy`, `Mozliwe_Odpowiedzi_idMozliwe_Odpowiedzi`)
                             VALUES('.$id.','.$key.','.$odpowiedz.')';
                         $insert_result = $conn->query($sql_insert);
+                        if (! $insert_result) {
+                            trigger_error('Invalid query: ' . $conn->error);
+                        }
                     }
-                 
-                }else{
+                }
+                elseif (is_numeric($value)){
+                    echo '<br>';
+                    echo 'radio';
                     //RADIOBUTTON
-                $sql_insert = 'INSERT INTO odpowiedzi_studentow (`Studenci_idStudenci`, `Pytania_Z_Formularzy_idPytania_Z_Formularzy`, `Mozliwe_Odpowiedzi_idMozliwe_Odpowiedzi`)
-                            VALUES('.$id.','.$key.','.$value.')';
-                $insert_result = $conn->query($sql_insert);
-            }
+                    $sql_insert = 'INSERT INTO odpowiedzi_studentow (`Studenci_idStudenci`, `Pytania_Z_Formularzy_idPytania_Z_Formularzy`, `Mozliwe_Odpowiedzi_idMozliwe_Odpowiedzi`)
+                                VALUES('.$id.','.$key.','.$value.')';
+                    $insert_result = $conn->query($sql_insert);
+                    if (! $insert_result) {
+                        trigger_error('Invalid query: ' . $conn->error);
+                    }
+                }
             }
                   
           
-           
-               
-            
-            
-       
                     echo ("<h2>Ankietę zapisano prawidłowo!<br/></h2>");
                     //przycisk do powrotu do index.php
                     echo '<form method="post" action="sugestie.php">

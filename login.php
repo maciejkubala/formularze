@@ -37,7 +37,7 @@
     if (! empty($_POST["type"]) && $_POST["type"] == "student") {
         echo '<form method="post" action="formularz.php" name="formularzIndeks">';
         echo '    	<label for="indeks">Numer indeksu:</label>';
-        echo '    	<input id="indeks" name="indeks" type="text" required><br/>';
+        echo '    	<input id="indeks" maxlength="6" name="indeks" type="text" required><br/>';
         echo '<br/>';
         echo '      <select id="formularz_id" name="formularz_id">';
         while (     $row = $result_formularze->fetch_assoc()) { //

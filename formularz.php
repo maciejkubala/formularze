@@ -7,6 +7,7 @@
 </head>
 <body>
 
+
 <?php
 session_start();
 
@@ -47,13 +48,21 @@ function generujPytanie($v_idPytania, $v_connection, $v_typ, $v_ilosc_wyborow)
             $tresc = $row["Tresc"];
             $idMozliwe_Odpowiedzi = $row["idMozliwe_Odpowiedzi"];
 
+            
             // TYP CHECKBOX/RADIOBUTTON KLASA , TABLICA
             if ($v_typ == 'C') {
-                echo '<input type="checkbox" class="option-input limited-check-' . $v_idPytania . '"  id="' . $v_idPytania . '" name="' . $v_idPytania . '[]" value="' . $idMozliwe_Odpowiedzi . '">' . $tresc . '<br/>';
+                // jesli inne dodaj input box
+                if($tresc == "Inne") {
+                    echo '<input type="checkbox" class="option-input limited-check-' . $v_idPytania . '"  id="inne' . $v_idPytania . '" name="inne' . $v_idPytania . '[]" value="' . $idMozliwe_Odpowiedzi . '" onclick="javascript:showHideInput' . $v_idPytania . '();">' . $tresc . '<br/>';
+                    echo '<div id="div' . $v_idPytania . '" style="display:none"><input type="text" style="width:500px;" id="inne' . $v_idPytania . 'odp' . $idMozliwe_Odpowiedzi . '" name="inne' . $v_idPytania . 'odp' . $idMozliwe_Odpowiedzi . '"></div>';
+                } else {
+                    echo '<input type="checkbox" class="option-input limited-check-' . $v_idPytania . '"  id="' . $v_idPytania . '" name="' . $v_idPytania . '[]" value="' . $idMozliwe_Odpowiedzi . '">' . $tresc . '<br/>';
+                }
             } 
             if ($v_typ == 'R') {
                 echo '<input type="radio" class="option-input radio" id="' . $v_idPytania . '" name="' . $v_idPytania . '" value="' . $idMozliwe_Odpowiedzi . '" >' . $tresc . '<br/>';
             }
+            
         }
         echo '</div>';
     }
@@ -102,8 +111,38 @@ if ($result_sqlIdStudenta->num_rows > 0) {
         echo ' return true;';
         echo '}';
         echo "\r\n";
+        echo "\r\n";
         echo '</script>';
         
+    // generuj javaskrypty do pola inne
+        echo '<script type="text/javascript">';
+        $sql_inne = "SELECT idPytania 
+                       FROM v_pytania_z_formularza pf
+                       join mozliwe_odpowiedzi mo on mo.Pytania_idPytania = pf.idPytania
+                      where pf.idFormularze = " . $formularz_id . " 
+                        and mo.Tresc = 'Inne'";
+        $result_inne = $conn->query($sql_inne);
+        if ($result_inne->num_rows > 0) {
+            while ($row = $result_inne->fetch_assoc()) {
+
+                $idPytania = $row["idPytania"];
+                
+                echo 'function showHideInput' . $idPytania . '() {';
+                echo "\r\n";
+
+                echo '    if (document.getElementById(\'inne' . $idPytania . '\').checked) {';
+                echo '        document.getElementById(\'div' . $idPytania . '\').style.display = \'block\';';
+                echo '    }';
+                echo '    else document.getElementById(\'div' . $idPytania . '\').style.display = \'none\';';
+                echo '}';
+                
+                echo "\r\n";
+                echo "\r\n";
+                
+            }
+        }
+        echo "\r\n";
+        echo '</script>';
         
         
    
@@ -179,5 +218,6 @@ if ($result_sqlIdStudenta->num_rows > 0) {
 $conn->close();
 
 ?>
+
 </body>
 </html>
