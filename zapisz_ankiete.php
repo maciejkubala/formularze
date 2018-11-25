@@ -11,29 +11,52 @@
   </head>
   <body>
     
-    
     <?php 
     session_start();
     
     include 'header.php';
     include 'polaczenie_do_bazy.php';
-    //-------------------------------
-/*     // POLACZENIE DO BAZY
-    $servername = "localhost";
-    $username = "root";
-    $password = "";
-    $dbname = "baza_formularzy";
-    
-    $conn = new mysqli($servername, $username, $password, $dbname);
-    
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
-    $conn->set_charset("utf8"); */
+
+   
+   
+  /*  $NAME= $_FILES['Plik_Do_CV']['name'];
+   
+   $TMP_NAME= $_FILES['Plik_Do_CV']['tmp_name'];
+   
+   $SUBMITBUTTON= $_POST['submit'];
+   
+   $POSITION= STRPOS($NAME, ".");
+   
+   $FILEEXTENSION= SUBSTR($NAME, $POSITION + 1);
+   
+   $FILEEXTENSION= STRTOLOWER($FILEEXTENSION); 
+   
+   $DESCRIPTION= $_POST['Opis_Pliku'];*/
+   
+   
+   
+/*    IF (ISSET($NAME)) {
+       
+       $PATH= 'pliki/';
+       
+       IF (!EMPTY($NAME)){
+           IF (MOVE_UPLOADED_FILE($TMP_NAME, $PATH.$NAME)) {
+               ECHO 'Plik został pobrany prawidłowo!';
+               
+           }
+       }
+   } */
+   
+   
     
     //znajdz id studenta o numerze inkdeksu z session
     // zapytanie o odpowiedzi do pytania -> patrz parameter idPytania
     $sqlIdStudenta = "SELECT idStudenci FROM studenci WHERE Nr_Indeksu = ".$_SESSION['student'];
+    
+    echo'<form action="cv.php" method="post">
+    <input type="submit" name="submit"></>
+    <input type="hidden" id="type" name="type" value="' . $_SESSION['student'] . '">;
+    </form>';  
     
     // wykonac sql
     $resultIdStudenta = $conn->query($sqlIdStudenta);
@@ -68,65 +91,27 @@
     }
     
     if(!empty($_POST)) {
-            //echo("Student: ".$id."<br/>");
+//         echo("Student: ".$id."<br/>");
             //zapisz odpowiedzi studenta z ankiety
             foreach($_POST as $key => $value) { 
-                echo '<br>';
-                echo '<br>';
-                echo '<br>';
-                echo("key: ".$key." value: ".$value."<br/>");
-                echo 'substr($key, 0, 4)' . substr($key, 0, 4);
-                
-                if((substr($key, 0, 4) == "inne") && is_array($value)) {
-                    // pomiń checkbox z pytania inne
-                    // pytanie inne bedzie zapisane z textboxa
-                }
-                elseif(substr($key, 0, 4) == "inne") {
-                    echo '<br>';
-                    echo 'inne';
-                    //INNE
-                    $id_pytania = substr($key, 4, strpos($key, 'o') - 4);
-                    echo 'id_pytania = ' . $id_pytania;
-                    echo '<br>';
-                    $id_odpowiedzi = substr($key, strpos($key, 'o') + 3, strlen($key) - (strpos($key, 'o') + 3));
-                    echo 'id_odpowiedzi = ' . $id_odpowiedzi;
-                    $sql_insert = 'INSERT INTO odpowiedzi_studentow (`Studenci_idStudenci`, `Pytania_Z_Formularzy_idPytania_Z_Formularzy`, `Mozliwe_Odpowiedzi_idMozliwe_Odpowiedzi`, `Odpowiedz_tekstowa`)
-                                VALUES('.$id.','.$id_pytania.', ' . $id_odpowiedzi . ', "'.$value.'")';
-                    echo '<br>';
-                    echo $sql_insert;
-                    $insert_result = $conn->query($sql_insert);
-                    if (! $insert_result) {
-                        trigger_error('Invalid query: ' . $conn->error);
-                    }
-                    
-                }
-                elseif (is_array($value)){
-                    echo '<br>';
-                    echo 'checkbox';
-                    //CHECKBOXY
+//                 echo("key: ".$key." value: ".$value."<br/>");
+//JEST TABLICA RADIONVS CHECKBOX
+                if(is_array($value)){
                     foreach($value as $odpowiedz){
                         $sql_insert = 'INSERT INTO odpowiedzi_studentow (`Studenci_idStudenci`, `Pytania_Z_Formularzy_idPytania_Z_Formularzy`, `Mozliwe_Odpowiedzi_idMozliwe_Odpowiedzi`)
                             VALUES('.$id.','.$key.','.$odpowiedz.')';
                         $insert_result = $conn->query($sql_insert);
-                        if (! $insert_result) {
-                            trigger_error('Invalid query: ' . $conn->error);
-                        }
                     }
-                }
-                elseif (is_numeric($value)){
-                    echo '<br>';
-                    echo 'radio';
+                 
+                }else{
                     //RADIOBUTTON
-                    $sql_insert = 'INSERT INTO odpowiedzi_studentow (`Studenci_idStudenci`, `Pytania_Z_Formularzy_idPytania_Z_Formularzy`, `Mozliwe_Odpowiedzi_idMozliwe_Odpowiedzi`)
-                                VALUES('.$id.','.$key.','.$value.')';
-                    $insert_result = $conn->query($sql_insert);
-                    if (! $insert_result) {
-                        trigger_error('Invalid query: ' . $conn->error);
-                    }
-                }
+                $sql_insert = 'INSERT INTO odpowiedzi_studentow (`Studenci_idStudenci`, `Pytania_Z_Formularzy_idPytania_Z_Formularzy`, `Mozliwe_Odpowiedzi_idMozliwe_Odpowiedzi`)
+                            VALUES('.$id.','.$key.','.$value.')';
+                $insert_result = $conn->query($sql_insert);
             }
-                  
-          
+            }
+               
+           // ECHO  $_POST["type"];
                     echo ("<h2>Ankietę zapisano prawidłowo!<br/></h2>");
                     //przycisk do powrotu do index.php
                     echo '<form method="post" action="sugestie.php">
@@ -142,6 +127,23 @@
         
 
     }
+    
+/*     $select_update = 'UPDATE studenci
+	SET
+	Plik_Do_CV = "'.$NAME.'"
+	WHERE
+	idStudenci = '.$_SESSION['student'].'';
+    
+    
+    echo $select_update;
+    $RESULT= $conn->QUERY($select_update);
+    
+    
+    if (! $RESULT) {
+        trigger_error('Invalid query: ' . $conn->error);
+    }
+    
+    DIE(); */
     ?>
 
     <!-- Optional JavaScript -->

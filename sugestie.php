@@ -28,7 +28,7 @@
     
     }
     if(isset($_POST['type']) && $_POST['type'] == "student") {
-         echo('<a href="index.php" class="option-input" style="width: 150px; text-decoration: none;">Wroc na poczatek</a>');
+         echo('<a href="zapisz_ankiete.php" class="option-input" style="width: 150px; text-decoration: none;">Wroc na poczatek</a>');
     } else{
          echo('<a href="panel_pracodawca.php" class="option-input" style="width: 150px; text-decoration: none;">Wroc do panelu pracodawcy</a>');
      } 
