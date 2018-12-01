@@ -70,11 +70,19 @@ function generujPytanie($v_idPytania, $v_connection, $v_typ, $v_ilosc_wyborow)
 
 // spradz najpierw czy student jest juz w bazie
 $student = $_POST["indeks"];
-$sqlIdStudenta = "SELECT idStudenci FROM studenci WHERE Nr_Indeksu = " . $student;
+
+$formularz_id = $_POST["formularz_id"];
+
+$sqlIdStudenta = "SELECT distinct s.idStudenci, pf.Formularze_idFormularze
+                   FROM odpowiedzi_studentow os
+                   join studenci s on os.Studenci_idStudenci = s.idStudenci
+                   join pytania_z_formularzy pf on pf.idPytania_Z_Formularzy = os.Pytania_Z_Formularzy_idPytania_Z_Formularzy
+                  where Nr_Indeksu = " . $student . " and pf.Formularze_idFormularze = " . $formularz_id;
+
 $result_sqlIdStudenta = $conn->query($sqlIdStudenta);
 if ($result_sqlIdStudenta->num_rows > 0) {
     // jesli zapytanie zwrocilo rekord to znaczy student o takim numerze istnieje
-    echo '<h2 style="color:red;">Student o numerze indeksu : ' . $student . ' już istnieje w bazie!</h2>';
+    echo '<h3 style="color:red;">Student o numerze indeksu ' . $student . ' już wypełnił ten formularz!</h3>';
     
 } else {
 
@@ -180,6 +188,7 @@ if ($result_sqlIdStudenta->num_rows > 0) {
     } else {
         echo "0 results";
     }
+    echo '<input type="hidden" id="formularz_id" name="formularz_id" value="' . $formularz_id . '">';
     echo '<input type="hidden" id="type" name="type" value="' . $_POST["type"] . '">';
     // tekst do walidacji pytań
     echo '<p style="color:red;" id="errMessage"></p>';
