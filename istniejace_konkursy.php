@@ -39,10 +39,9 @@
      
         
         // lita studentow
-        
         $ilosc = $_POST['ilosc_osob'];
         
-        $select_lista_studentow = 'SELECT Nr_Indeksu, konkurs_id, punkty_rekrutacyjne
+        $select_lista_studentow = 'SELECT Nr_Indeksu, konkurs_id, punkty_rekrutacyjne, Plik_Do_CV
                                      FROM v_lista_studentow
                                     WHERE konkurs_id = ' . $konkurs_id . '
                                     ORDER BY punkty_rekrutacyjne DESC
@@ -90,12 +89,13 @@
         if ($result_lista_studentow->num_rows > 0) {
             $nr = 1;
           echo '
-                <table style="width:50%">
+                <table style="width:50%;" >
                 <tr">
                 <th>MIEJSCE</th>
                 <th>Numer indeksu</th> 
                 <th>Wynik punktowy [pkt]</th>
                 <th>Wynik procentowy [%]</th> 
+                <th>CV studenta</th> 
                 </tr>';
            
             while ($row = $result_lista_studentow->fetch_assoc()) {
@@ -103,7 +103,7 @@
                 $nr_indeksu = $row["Nr_Indeksu"];
                 $wynik = $row["punkty_rekrutacyjne"];
                 $wynik_procentowy= round(($wynik/$maks_punktow)*100,2);
-                
+                $cv = $row["Plik_Do_CV"];
             
                 echo '<tr>';
                 
@@ -122,7 +122,11 @@
                 echo '<td>';
                 echo $wynik_procentowy;
                 echo '</td>';
-             
+
+                echo '<td>';
+                echo "<a href='$cv'>$cv</a>";
+                echo '</td>';
+                
                 echo '</tr>';
             
                 $nr++;

@@ -108,7 +108,10 @@
     }
     
     if(!empty($_POST)) {
-        $formularz_id = $_POST["formularz_id"];
+        
+        if(isset($_POST["formularz_id"])) {
+            $formularz_id = $_POST["formularz_id"];
+        }
         //echo("Student: ".$id."<br/>");
         //zapisz odpowiedzi studenta z ankiety
         foreach($_POST as $key => $value) {
