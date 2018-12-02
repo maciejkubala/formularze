@@ -16,7 +16,7 @@
     	function sprawdz() {
         	var f = document.forms.formularzIndeks;
         	var index_error_text;
-				if(isNaN(f.indeks.value) || f.indeks.value.length != 6 ){
+				if(isNaN(f.user_id.value) || f.user_id.value.length != 6 ){
 					text = 'Niepoprawny numer indeksu!';
 					document.getElementById("index_error_message").innerHTML = text;
 					return;
@@ -37,7 +37,7 @@
     if (! empty($_POST["type"]) && $_POST["type"] == "student") {
         echo '<form method="post" action="formularz_student.php" name="formularzIndeks" onkeypress="return event.keyCode != 13;">';
         echo '    	<label for="indeks">Numer indeksu:</label>';
-        echo '    	<input id="indeks" maxlength="6" name="indeks" type="text" required><br/>';
+        echo '    	<input id="user_id" maxlength="6" name="user_id" type="text" required><br/>';
         echo '<br/>';
         echo '      <select id="formularz_id" name="formularz_id">';
         while (     $row = $result_formularze->fetch_assoc()) { //
@@ -46,7 +46,7 @@
             echo '<option value="' . $id . '">' . $nazwa . '</option>';
         }
         echo '      </select><br/>';
-        echo '      <input type="hidden"id="type" name="type" value="' . $_POST["type"] . '">';
+        echo '      <input type="hidden" id="type" name="type" value="' . $_POST["type"] . '">';
         echo '    	<input type="button" class="option-input" style="width: 100px;" value="Zatwierdź" onclick="sprawdz()">';                    
         echo '</form>';
     } else {

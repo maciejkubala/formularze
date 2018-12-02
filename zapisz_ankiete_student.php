@@ -52,7 +52,7 @@
     
     //znajdz id studenta o numerze inkdeksu z session
     // zapytanie o odpowiedzi do pytania -> patrz parameter idPytania
-    $sqlIdStudenta = "SELECT idStudenci FROM studenci WHERE Nr_Indeksu = ".$_SESSION['student'];
+    $sqlIdStudenta = "SELECT idStudenci FROM studenci WHERE Nr_Indeksu = ".$_SESSION['user_id'];
     
     // wykonac sql
     $resultIdStudenta = $conn->query($sqlIdStudenta);
@@ -68,14 +68,14 @@
 
     if(empty($id)){
         
-        $select_id_student ='INSERT INTO `studenci` (`Nr_Indeksu`, `Data_Wypelnienia`) VALUES ('.$_SESSION['student'].', NOW());';
+        $select_id_student ='INSERT INTO `studenci` (`Nr_Indeksu`, `Data_Wypelnienia`) VALUES ('.$_SESSION['user_id'].', NOW());';
         $resultInsertStudent = $conn->query($select_id_student);
         if (! $resultInsertStudent) {
             trigger_error('Invalid query: ' . $conn->error);
         }
         //$id = $conn->insert_id;
         
-        $sqlIdStudenta = "SELECT idStudenci FROM studenci WHERE Nr_Indeksu = ".$_SESSION['student'];
+        $sqlIdStudenta = "SELECT idStudenci FROM studenci WHERE Nr_Indeksu = ".$_SESSION['user_id'];
         
         $resultIdStudenta = $conn->query($sqlIdStudenta);
         
@@ -123,7 +123,7 @@
                 // pomiń checkbox z pytania inne
                 // pytanie inne bedzie zapisane z textboxa
             }
-            elseif($key == "formularz_id" || $key == "type" ) {
+            elseif($key == "formularz_id" || $key == "type" || $key == "user_id") {
                 // pomiń parametr formularz_id
             }
             elseif((substr($key, 0, 4) == "inne") && ($value != "")) {
@@ -189,21 +189,6 @@
                 }
             }
         }
-           // ECHO  $_POST["type"];
-                    
-                    
-//                     echo'<form action="cv_student.php" method="post">
-//                         <input type="submit" name="submit"></>
-//                         <input type="hidden" id="type" name="type" value="' . $_SESSION['student'] . '">;
-//                         </form>';
-                    
-                    
-                  
-            
-            
-//             echo('<a href="index.php" class="option-input" style="width: 150px; text-decoration: none;">Wroc na poczatek</a>');
-        
-
     }
 
     echo ("<h2>Ankietę zapisano prawidłowo!<br/></h2>");
@@ -213,6 +198,7 @@
                         <label for="sugestia">Jesli masz jakies uwagi/pytania/sugestie napisz do nas!</label>
                         <textarea name="sugestia" id"sugestia" rows="5" cols="40"></textarea>
                         <input type="hidden" id="type" name="type" value="' . $_POST["type"]. '">
+                        <input type="hidden" id="user_id" name="user_id" value="' . $_POST["user_id"]. '">
                         <br>
                         <input type="submit" class="option-input" style="width: 100px;" value="Wyslij">
                         </form>';
@@ -224,23 +210,6 @@
     
     include 'cv_student.php';
     
-
-/*     $select_update = 'UPDATE studenci
-	SET
-	Plik_Do_CV = "'.$NAME.'"
-	WHERE
-	idStudenci = '.$_SESSION['student'].'';
-    
-    
-    echo $select_update;
-    $RESULT= $conn->QUERY($select_update);
-    
-    
-    if (! $RESULT) {
-        trigger_error('Invalid query: ' . $conn->error);
-    }
-    
-    DIE(); */
     ?>
 
     <!-- Optional JavaScript -->

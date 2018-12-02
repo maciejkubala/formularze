@@ -13,21 +13,11 @@ session_start();
 
 include 'header.php';
 
-// -------------------------------
-// POLACZENIE DO BAZY
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "baza_formularzy";
-
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+if(empty($_POST)) {
+    include 'logout.php';
 }
-$conn->set_charset("utf8");
 
-// -------------------------------
+include 'polaczenie_do_bazy.php';
 
 // na podstawie id pytania, pobierz do tego pytania odpowiedzi i wygeneruj kod html
 function generujPytanie($v_idPytania, $v_connection, $v_typ, $v_ilosc_wyborow)
@@ -69,25 +59,25 @@ function generujPytanie($v_idPytania, $v_connection, $v_typ, $v_ilosc_wyborow)
 }
 
 // spradz najpierw czy student jest juz w bazie
-$student = $_POST["indeks"];
-
+$user_id = $_POST["user_id"];
 $formularz_id = $_POST["formularz_id"];
 
 $sqlIdStudenta = "SELECT distinct s.idStudenci, pf.Formularze_idFormularze
                    FROM odpowiedzi_studentow os
                    join studenci s on os.Studenci_idStudenci = s.idStudenci
                    join pytania_z_formularzy pf on pf.idPytania_Z_Formularzy = os.Pytania_Z_Formularzy_idPytania_Z_Formularzy
-                  where Nr_Indeksu = " . $student . " and pf.Formularze_idFormularze = " . $formularz_id;
+                  where Nr_Indeksu = " . $user_id . " and pf.Formularze_idFormularze = " . $formularz_id;
 
 $result_sqlIdStudenta = $conn->query($sqlIdStudenta);
 if ($result_sqlIdStudenta->num_rows > 0) {
     // jesli zapytanie zwrocilo rekord to znaczy student o takim numerze istnieje
-    echo '<h3 style="color:red;">Student o numerze indeksu ' . $student . ' już wypełnił ten formularz!</h3>';
+    echo '<h3 style="color:red;">Student o numerze indeksu ' . $user_id . ' już wypełnił ten formularz!</h3>';
     
 } else {
 
+    $_SESSION["user_id"] = $user_id;
+    $_SESSION["type"] = "student";
     $formularz_id = $_POST["formularz_id"];
-
     
     // generuj javaskrypty do walidacji wypełnienia pól
     echo '<script type="text/javascript">';
@@ -166,7 +156,6 @@ if ($result_sqlIdStudenta->num_rows > 0) {
     if (! $result) {
         trigger_error('Invalid query: ' . $conn->error);
     }
-    $_SESSION["student"] = $student;
 
     echo '<div>';
     echo '<form id="ankieta_student" name="ankieta_student" method="post" action="zapisz_ankiete_student.php" onsubmit="return checkFormData()">';
@@ -190,6 +179,7 @@ if ($result_sqlIdStudenta->num_rows > 0) {
     }
     echo '<input type="hidden" id="formularz_id" name="formularz_id" value="' . $formularz_id . '">';
     echo '<input type="hidden" id="type" name="type" value="' . $_POST["type"] . '">';
+    echo '<input type="hidden" id="user_id" name="user_id" value="' . $_POST["user_id"] . '">';
     // tekst do walidacji pytań
     echo '<p style="color:red;" id="errMessage"></p>';
 

@@ -23,7 +23,8 @@ if (isset($_SESSION['type'])) {
 
 if(isset($_POST['user_id'])) {
     
-     echo '<div class="right"><a href="?wyloguj=1">Wyloguj</a></div>';
+    // if user type  = student to w wtedy wyswietli link z numerem indeksu a w przeciwnym wypadku tak jak bylo
+    echo '<div class="right"><a href="?wyloguj=1">Wyloguj</a></div>';
 //    echo '<a href="?wyloguj=1">[Wyloguj]</a>';
     if (isset($_GET['wyloguj'])==1)
     {
