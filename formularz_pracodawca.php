@@ -113,9 +113,9 @@ if ($_POST) {
        $row = mysqli_fetch_assoc($result_opis);
        $opis = $row['Opis_Stanowiska'];
         echo '<div>';
-        echo '<form id="ankieta_pracodawca" method="post" action="zapisz_konkurs_pracodawca.php">';
+        echo '<form id="ankieta_pracodawca" method="post" action="zapisz_konkurs_pracodawca.php" >';
         echo '<label for="opis">Wpisz opis konkursu:</label>
-                        <textarea name="opis" id"opis" rows="5" cols="40">'.$opis.'</textarea>';
+                        <textarea name="opis" id"opis" maxlength="250" rows="5" cols="40">'.$opis.'</textarea>';
   
         echo '</br></br>';
                         
