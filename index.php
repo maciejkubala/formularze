@@ -18,6 +18,9 @@
     if (isset($_SESSION['user_id'])) {
         
         include 'logout.php';
+        if($_SESSION['type'] == 'pracodawca') {
+            header("Location: panel_pracodawca.php");
+        }
     
     } else {
         //wyswietl formularz wyboru student/pracodawca

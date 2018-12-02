@@ -62,8 +62,8 @@ if (isset($_POST['loguj']))
 		mysqli_query("UPDATE `pracodawcy` SET (`logowanie` = '".time().", `ip` = '".$ip."'') WHERE Nazwa = '".$login."';");
 	
 		$_SESSION['zalogowany'] = true;
-		$_SESSION['login'] = $login;
-		
+		$_SESSION['user_id'] = $login;
+		$_SESSION['type'] = "pracodawca";
 		// zalogowany
 		
 		// pobierz id pracodawcy
@@ -85,6 +85,7 @@ if (isset($_SESSION['zalogowany'])==1) {
     {
     	
         $_SESSION["user_id"] = $user_id;
+        $_SESSION['type'] = "pracodawca";
         $url = "panel_pracodawca.php";
         header("Location: ".$url);
         die();
@@ -105,6 +106,7 @@ if (isset($_SESSION['zalogowany'])==0 || $_SESSION['zalogowany']==false) :
 <form method="POST" action="logowanie_pracodawca.php">
 <b>Login:</b> <input type="text" name="login"><br>
 <b>Hasło:</b> <input type="password" name="haslo"><br>
+<input type="hidden" id="type" name="type" value="pracodawca">';
 <input type="submit" value="Zaloguj" name="loguj">
 </form> 
 
