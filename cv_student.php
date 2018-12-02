@@ -5,7 +5,7 @@
 
     echo ' <br>';
     echo ' <br>';
-    echo ' <form action="zapisz_ankiete.php" method=\'post\' enctype="multipart/form-data">';
+    echo ' <form action="zapisz_ankiete_student.php" method=\'post\' enctype="multipart/form-data">';
     echo ' <!--<input type="text" name="Opis_Pliku"/><br><br>-->';
     echo ' <input type="file" name="Plik_Do_CV" style="width:400px;" /><br><br>';
     echo ' <input type="hidden" id="type" name="type" value="' . $_POST["type"]. '">';
@@ -100,5 +100,5 @@
     }
     PRINT "</TABLE>\N";  */
     }
-//     echo ('<a href="zapisz_ankiete.php" class="option-input" style="width: 150px; text-decoration: none;">Dopisz sugestie</a><br/><br/><br/>');
+//     echo ('<a href="zapisz_ankiete_student.php" class="option-input" style="width: 150px; text-decoration: none;">Dopisz sugestie</a><br/><br/><br/>');
     ?>

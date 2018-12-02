@@ -124,7 +124,7 @@
                 echo '</td>';
 
                 echo '<td>';
-                echo "<a href='$cv'>$cv</a>";
+                echo '<a target="_blank" rel="noopener noreferrer" href='.$cv. '>'.$cv.'</a>';
                 echo '</td>';
                 
                 echo '</tr>';

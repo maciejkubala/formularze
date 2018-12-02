@@ -35,7 +35,7 @@
     $result_formularze = $conn->query($sql_formularze);
     
     if (! empty($_POST["type"]) && $_POST["type"] == "student") {
-        echo '<form method="post" action="formularz.php" name="formularzIndeks" onkeypress="return event.keyCode != 13;">';
+        echo '<form method="post" action="formularz_student.php" name="formularzIndeks" onkeypress="return event.keyCode != 13;">';
         echo '    	<label for="indeks">Numer indeksu:</label>';
         echo '    	<input id="indeks" maxlength="6" name="indeks" type="text" required><br/>';
         echo '<br/>';
@@ -50,7 +50,7 @@
         echo '    	<input type="button" class="option-input" style="width: 100px;" value="Zatwierdź" onclick="sprawdz()">';                    
         echo '</form>';
     } else {
-        $url = "logowanie.php";
+        $url = "logowanie_pracodawca.php";
         header("Location: " . $url);
         die();
     }

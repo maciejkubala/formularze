@@ -21,7 +21,7 @@
     
     } else {
         //wyswietl formularz wyboru student/pracodawca
-        echo '<form method="post" action="login.php">
+        echo '<form method="post" action="login_student.php">
         <label for="type">Witaj, kim jesteś?:</label>
         <select name="type" id="type">
         <option value="student">Student</option>

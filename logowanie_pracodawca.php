@@ -14,7 +14,7 @@
 <?php
 session_start();
 include 'header.php';
-//-------------------------------
+//-------------------------------   
 // POLACZENIE DO BAZY
 $servername = "localhost";
 $username = "root";
@@ -102,13 +102,13 @@ if (isset($_SESSION['zalogowany'])==0 || $_SESSION['zalogowany']==false) :
 
 ?>
 
-<form method="POST" action="logowanie.php">
+<form method="POST" action="logowanie_pracodawca.php">
 <b>Login:</b> <input type="text" name="login"><br>
 <b>Hasło:</b> <input type="password" name="haslo"><br>
 <input type="submit" value="Zaloguj" name="loguj">
 </form> 
 
-<a href="rejestracja.php">[Zarejestruj]</a>
+<a href="rejestracja_pracodawca.php">[Zarejestruj]</a>
 
 <?php endif;
  ?>

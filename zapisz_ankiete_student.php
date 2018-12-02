@@ -192,7 +192,7 @@
            // ECHO  $_POST["type"];
                     
                     
-//                     echo'<form action="cv.php" method="post">
+//                     echo'<form action="cv_student.php" method="post">
 //                         <input type="submit" name="submit"></>
 //                         <input type="hidden" id="type" name="type" value="' . $_SESSION['student'] . '">;
 //                         </form>';
@@ -222,7 +222,7 @@
     echo '<br>';
     echo 'Jesli chcesz wysłać CV załącz plik tutaj:';
     
-    include 'cv.php';
+    include 'cv_student.php';
     
 
 /*     $select_update = 'UPDATE studenci

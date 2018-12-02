@@ -22,7 +22,8 @@
 
         $nazwa_konkursu = $_POST['nazwa_konkursu'];
         $formularz_id = $_POST['formularz_id'];
-
+        $opis_stanowiska = $_POST ['opis'];
+        echo $opis_stanowiska;
         if (! empty($_POST['konkurs_id'])) {
             $konkurs_id = $_POST['konkurs_id'];
         }
@@ -33,16 +34,25 @@
         if ($insert_update == 'INSERT') {
 
             // zapisz konkurs do bazy (tabela konkursy prac)
-            $insert_sql = 'INSERT INTO konkursy_pracodawcow (Formularze_idFormularze, Pracodawcy_idPracodawcy, Nazwa)
-	                       VALUES (' . $formularz_id . ', ' . $_SESSION['user_id'] . ', "' . $nazwa_konkursu . '");';
+            $insert_sql = 'INSERT INTO konkursy_pracodawcow (Formularze_idFormularze, Pracodawcy_idPracodawcy, Nazwa, Opis_Stanowiska)
+	                       VALUES (' . $formularz_id . ', ' . $_SESSION['user_id'] . ' ,"' .  $nazwa_konkursu . '","' .$opis_stanowiska. '")'; 
+            echo $insert_sql;
+            
+            
+            $update_opis = '';
             $insert_result = $conn->query($insert_sql);
+            
+            if (! $insert_result) {
+                trigger_error('Invalid query: ' . $conn->error);
+            }
 
             // pobierz nowo utworzony konkurs id
             $sql_konkurs = 'select idKonkursy_Pracodawcow
                               from konkursy_pracodawcow 
                              where Formularze_idFormularze = ' . $formularz_id . '
-                               and Pracodawcy_idPracodawcy = ' . $_SESSION['user_id'] . '
-                               and Nazwa = "' . $nazwa_konkursu . '";';
+                               and Pracodawcy_idPracodawcy = ' . $_SESSION['user_id'] . '                               
+                               and Nazwa = "' . $nazwa_konkursu . '"
+                               and Opis_Stanowiska = "' . $opis_stanowiska .'"';
             $sql_konkurs_result = $conn->query($sql_konkurs);
 
             if (! $sql_konkurs_result) {
@@ -56,16 +66,6 @@
             }
         }
         
-        ///Po co to niżej ?? chyba do usunięcia 
-
-        if (! empty($_POST['ilosc_osob'])) {
-            $ilosc = $_POST['ilosc_osob'];
-        } else {
-            $ilosc = 10;
-        }
-        
-        $waga_max = 0;
-
         // zapis wagi pytan i odpowiedzi po wypelnionym
         if (! empty($_POST['pytanie']) && ! empty($_POST['waga'])) {
             // zapisz wagi pytan z ankiety pracodawcy
@@ -120,9 +120,19 @@
         $maks_punktow = $row['maks_punktow'];
         
         $sql_update_maks_punktow = 'update konkursy_pracodawcow
-                                   set maks_punktow = ' . $maks_punktow .
-                                   ' where idKonkursy_Pracodawcow = ' . $konkurs_id ;
+                                   set maks_punktow = ' . $maks_punktow .',
+                                       Opis_Stanowiska = "'.$opis_stanowiska .'"
+                                    where idKonkursy_Pracodawcow = ' . $konkurs_id.'';
+        
+        echo $sql_update_maks_punktow;
+        
+        if (! $sql_update_maks_punktow) {
+            trigger_error('Invalid query: ' . $conn->error);
+        }
+        
         $sql_update_maks_punktow_result = $conn->query($sql_update_maks_punktow);
+        
+        
         
         echo "</br></br>";
         echo "Maksymalna wartosc punktow: ";

@@ -11,7 +11,7 @@
   </head>
   <body>
 
-<form method="POST" action="rejestracja.php">
+<form method="POST" action="rejestracja_pracodawca.php">
 <b>Login:</b> <input type="text" name="login"><br>
 <b>Hasło:</b> <input type="password" name="haslo1"><br>
 <b>Powtórz hasło:</b> <input type="password" name="haslo2"><br>

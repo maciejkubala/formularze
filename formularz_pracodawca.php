@@ -55,7 +55,10 @@ function generujPytanie($v_idPytania, $v_connection)
 
 
 echo '<div>';
-echo "<h2>WITAJ PRACODAWCO, ZAZNACZ WAGI PYTAN</h2>";
+echo "<h2>WITAJ PRACODAWCO, ZAZNACZ WAGI PYTAń i Odpowiedzi:</h2>";
+
+
+
 
 // jesli konkurs istnieje to wczytujemy istniejacy, w przeciwnym wypadku tworzymy nowy konkurs
 if ($_POST) {
@@ -65,11 +68,17 @@ if ($_POST) {
     $nazwa_konkursu = $_POST['nazwa_konkursu'];
     $pracodawca_id = $_POST['user_id'];
     
+    
+    
+    
+    
+    
     $sql_konkurs_pracodawcy = 'SELECT idKonkursy_Pracodawcow 
                                  FROM konkursy_pracodawcow 
                                 WHERE Formularze_idFormularze="' . $formularz_id . 
                                '" AND Nazwa = "' . $nazwa_konkursu . 
                                '" AND Pracodawcy_idPracodawcy = "' . $pracodawca_id . '";';
+    
                                      
     $result = $conn->query($sql_konkurs_pracodawcy);
     
@@ -87,9 +96,29 @@ if ($_POST) {
         if (! $result) {
             trigger_error('Invalid query: ' . $conn->error);
         }
-        
+       
+       $select_opis = 'select Opis_Stanowiska  from konkursy_pracodawcow
+                             where Formularze_idFormularze = ' . $formularz_id . '
+                               and Pracodawcy_idPracodawcy = ' . $_SESSION['user_id'] . '
+                               and Nazwa = "' . $nazwa_konkursu . '";';
+       
+       $result_opis = $conn->query($select_opis);
+       
+       if (! $result_opis)
+       {
+           trigger_error('Invalid query: ' . $conn->error);
+           
+       }
+       
+       $row = mysqli_fetch_assoc($result_opis);
+       $opis = $row['Opis_Stanowiska'];
         echo '<div>';
-        echo '<form id="ankieta_pracodawca" method="post" action="zapisz_konkurs.php">';
+        echo '<form id="ankieta_pracodawca" method="post" action="zapisz_konkurs_pracodawca.php">';
+        echo '<label for="opis">Wpisz opis konkursu:</label>
+                        <textarea name="opis" id"opis" rows="5" cols="40">'.$opis.'</textarea>';
+  
+        echo '</br></br>';
+                        
         if ($result->num_rows > 0) {
             $nr = 1; // numeracja na stronie
             while ($row = $result->fetch_assoc()) {
@@ -171,7 +200,10 @@ if ($_POST) {
         }
 
         echo '<div>';
-        echo '<form id="ankieta_pracodawca" method="post" action="zapisz_konkurs.php">';
+        echo '<form id="ankieta_pracodawca" method="post" action="zapisz_konkurs_pracodawca.php">';
+        echo '<label for="opis">Wpisz opis konkursu:</label>
+                        <textarea name="opis" id"opis" rows="5" cols="40"></textarea>';
+        echo '</br></br>';
         if ($result->num_rows > 0) {
             $nr = 1; // numeracja na stronie
             while ($row = $result->fetch_assoc()) {

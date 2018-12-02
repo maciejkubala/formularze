@@ -36,7 +36,7 @@
         $sql_konkursy = 'SELECT idKonkursy_Pracodawcow, Nazwa FROM konkursy_pracodawcow WHERE Pracodawcy_idPracodawcy=' . $_SESSION['user_id'];
         $result = $conn->query($sql_konkursy);
         if ($result->num_rows > 0) {
-            echo '<form method="post" action="istniejace_konkursy.php">';
+            echo '<form method="post" action="istniejace_konkursy_pracodawca.php">';
             echo '<label for="konkurs_id">Twoje konkursy:</label>';
             echo '<select id="konkurs_id" name="konkurs_id">';
             while (     $row = $result->fetch_assoc()) { 
@@ -46,19 +46,45 @@
             }
             echo '</select><br/>';
             echo '<label for="ilosc_oso b">Ile osob wyswietlic?</label>';
-            echo '<input type="number" id="ilosc_osob" name="ilosc_osob" required><br/>';
+            echo '<input type="number" min="0" id="ilosc_osob" name="ilosc_osob" required><br/>';
             echo '<input type="submit" class="option-input" style="width: 100px;" value="Zatwierdz">';
             echo '</form>';
-            echo "<br><br><br><br>";
+            echo "<br><br>";
      
+        
+        
         }
         }
 
+        //delete
+        
+        
+        $sql_konkursy = 'SELECT idKonkursy_Pracodawcow, Nazwa FROM konkursy_pracodawcow WHERE Pracodawcy_idPracodawcy=' . $_SESSION['user_id'];
+        $result = $conn->query($sql_konkursy);
+        if ($result->num_rows > 0) {
+            echo '<form method="post" action="usun_konkurs_pracodawca.php">';
+            echo '<label for="konkurs_id"> Wybierz, który konkurs chcesz usunąć:</label>';
+            echo '<select id="konkurs_id" name="konkurs_id">';
+            while (     $row = $result->fetch_assoc()) {
+                $id = $row['idKonkursy_Pracodawcow'];
+                $nazwa = $row['Nazwa'];
+                echo '<option value="' . $id . '">' . $nazwa . '</option>';
+            }
+            echo '</select><br/>';
+            /*echo '<label for="usun_konkurs">Ktróry konkurs chcesz usunąć?</label>';*/
+            echo '<input type="submit" class="option-input" style="width: 100px;" value="Usuń">';
+            echo '</form>';
+            echo "<br><br>";
+            
+            
+        }
      
         // wybierz formularz i wpisz nazwe konkursu
         $sql_formularze = 'SELECT idFormularze, Nazwa FROM formularze';
         $result = $conn->query($sql_formularze);
         if ($result->num_rows > 0) {
+            echo '<h5>Utwórz/edytuj konkurs:</h5>';
+            //echo '<br>';
             echo '<form method="post" action="formularz_pracodawca.php">';
             echo '<label for="formularz_id">Wybierz formularz</label>';
             echo '<select id="formularz_id" name= "formularz_id">';
@@ -74,7 +100,7 @@
             echo '</form>';
             echo '<br>';
         }
-
+//                  SUGESTIE
                         echo '<form method="post" action="sugestie.php">
                         <label for="sugestia">Jesli masz jakies uwagi/pytania/sugestie napisz do nas!</label>
                         <textarea name="sugestia" id"sugestia" rows="5" cols="40"></textarea>

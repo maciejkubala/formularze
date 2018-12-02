@@ -28,7 +28,7 @@
     
     }
     if(isset($_POST['type']) && $_POST['type'] == "student") {
-        echo '<form method="post" action="zapisz_ankiete.php">
+        echo '<form method="post" action="zapisz_ankiete_student.php">
                         <input type="hidden" id="type" name="type" value="' . $_POST["type"]. '">
                         <input type="submit" class="option-input" style="width: 100px;" value="Wróć">
               </form>';
