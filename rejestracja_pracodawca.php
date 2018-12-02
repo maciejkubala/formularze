@@ -7,21 +7,42 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" type="text/css" href="style.css.php">
-    <title>Hello, world!</title>
+   <title>boom</title>
   </head>
   <body>
+  
+  
+<script type="text/javascript">
+    	function sprawdz() {
+    		var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        	var f = document.forms.form1;
+        	//var email_error_text;
+				if(!(f.email.value.match(mailformat))){
+					text = 'Niepoprawny numer indeksu!';
+					document.getElementById("email_error_message").innerHTML = text;
+					return;
+				}
+				f.submit();	
+    		}
+    </script> 
+  
 
-<form method="POST" action="rejestracja_pracodawca.php">
+<form name="form1" method="POST" action="rejestracja_pracodawca.php">
 <b>Login:</b> <input type="text" name="login"><br>
 <b>Hasło:</b> <input type="password" name="haslo1"><br>
 <b>Powtórz hasło:</b> <input type="password" name="haslo2"><br>
-<b>Email:</b> <input type="text" name="email"><br>
-<input type="submit" value="Zarejestruj" name="rejestruj">
+<b>Email:</b> <input type="text" id="email" name="email"><br>
+<input type="submit" value="Zarejestruj" name="rejestruj" onclick="sprawdz()">
+
+
+
 </form> 
 
 <?php
 
 include 'header.php';
+
+
 //-------------------------------
 // POLACZENIE DO BAZY
 
@@ -84,8 +105,13 @@ if (isset($_POST['rejestruj']))
 	}
 	else echo "Podany login jest już zajęty.";
 }
+echo '<p style="color:red;" id="email_error_message"></p>';
 ?>
-    <!-- Optional JavaScript -->
+
+
+   
+
+	<!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
