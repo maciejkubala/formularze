@@ -11,38 +11,17 @@
   </head>
   <body>
   
-  
-<script type="text/javascript">
-    	function sprawdz() {
-    		var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-        	var f = document.forms.form1;
-        	//var email_error_text;
-				if(!(f.email.value.match(mailformat))){
-					text = 'Niepoprawny numer indeksu!';
-					document.getElementById("email_error_message").innerHTML = text;
-					return;
-				}
-				f.submit();	
-    		}
-    </script> 
-  
-
-<form name="form1" method="POST" action="rejestracja_pracodawca.php">
-<b>Login:</b> <input type="text" name="login"><br>
-<b>Hasło:</b> <input type="password" name="haslo1"><br>
-<b>Powtórz hasło:</b> <input type="password" name="haslo2"><br>
-<b>Email:</b> <input type="text" id="email" name="email"><br>
-<input type="submit" value="Zarejestruj" name="rejestruj" onclick="sprawdz()">
-
-
-
-</form> 
-
 <?php
 
 include 'header.php';
 
+if(!isset($_POST['email'])) {
+    $email = "";
+}
 
+if(!isset($_POST['login'])) {
+    $login = "";
+}
 //-------------------------------
 // POLACZENIE DO BAZY
 
@@ -60,6 +39,7 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 $conn->set_charset("utf8");
+
 
 function filtruj($zmienna) 
 {
@@ -79,37 +59,60 @@ if (isset($_POST['rejestruj']))
 	$haslo2 = filtruj($_POST['haslo2']);
 	$email = filtruj($_POST['email']);
 	$ip = filtruj($_SERVER['REMOTE_ADDR']);
-
-	// sprawdzamy czy login nie jest ju� w bazie
-	if (mysqli_num_rows($conn->query("SELECT Nazwa FROM pracodawcy WHERE Nazwa = '".$login."';")) == 0) 
-	{
-	    if (mysqli_num_rows($conn->query("SELECT Nazwa FROM pracodawcy WHERE email = '".$email."';")) == 0) 
-	    {
-    		if ($haslo1 == $haslo2) // sprawdzamy czy hasła takie same
-    		{
-    		    $md5haslo=md5($haslo1);
-     		    $sql = "INSERT INTO pracodawcy
-                         (idPracodawcy, Nazwa, haslo, email, ip, Data_Rejestracji, Data_Logowania)
-                         VALUES (null, '$login', '$md5haslo', '$email', '$ip', NOW(), NOW());";
-    		    $result = $conn->query($sql);
-    		    
-    		    if (!$result) {
-    		        trigger_error('Invalid query: ' . $conn->error);
-    		    }
-    
-    			echo "Konto zostało utworzone!";
-    		}
-    		else echo "Hasła nie są takie same";
-	    }
-	    else echo "Podany email jest już wprowadzony.";
+	
+	//Valid email!
+	if(filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    		// sprawdzamy czy login nie jest ju� w bazie
+    	if (mysqli_num_rows($conn->query("SELECT Nazwa FROM pracodawcy WHERE Nazwa = '".$login."';")) == 0) 
+    	{
+    	    if (mysqli_num_rows($conn->query("SELECT Nazwa FROM pracodawcy WHERE email = '".$email."';")) == 0) 
+    	    {
+    	        
+    	        $uppercase = preg_match('@[A-Z]@', $haslo1);
+    	        $lowercase = preg_match('@[a-z]@', $haslo1);
+    	        $number    = preg_match('@[0-9]@', $haslo1);
+    	        
+    	        if($uppercase && $lowercase && $number && strlen($haslo1) > 9) {
+    	        
+        	        if ($haslo1 == $haslo2) // sprawdzamy czy hasła takie same
+            		{
+            		    $md5haslo=md5($haslo1);
+             		    $sql = "INSERT INTO pracodawcy
+                                 (idPracodawcy, Nazwa, haslo, email, ip, Data_Rejestracji, Data_Logowania)
+                                 VALUES (null, '$login', '$md5haslo', '$email', '$ip', NOW(), NOW());";
+            		    $result = $conn->query($sql);
+            		    
+            		    if (!$result) {
+            		        trigger_error('Invalid query: ' . $conn->error);
+            		    }
+            
+            			echo "Konto zostało utworzone!";
+            			echo "<br>";
+            			echo "<br>";
+            			echo('<a href="logowanie_pracodawca.php" class="label" style="width: 150px; text-decoration: none;">Idź do strony logowania</a>');
+            			
+            		}
+        		    else echo "<p style='color:red;'>Hasła nie są takie same.</p>";
+    	        }
+    	        else echo "<p style='color:red;'>Hasło musi mieć minimum 8 znaków, w tym duże i małe litery i cyfry</p>";
+    	    }
+    	    else echo "<p style='color:red;'>Podany email jest już wprowadzony.</p>";
+    	}
+    	else echo "<p style='color:red;'>Podany login jest już zajęty.</p>";
 	}
-	else echo "Podany login jest już zajęty.";
+	else echo "<p style='color:red;'>Niepoprawny adres email.</p>";
 }
-echo '<p style="color:red;" id="email_error_message"></p>';
+
+echo '<form name="formRejestracja" method="POST" action="rejestracja_pracodawca.php">
+        <b>Login:</b> <input type="text" name="login"value="'.$login.'"><br>
+        <b>Hasło:</b> <input type="password" name="haslo1"><br>
+        <b>Powtórz hasło:</b> <input type="password" name="haslo2"><br>
+        <b>Email:</b> <input type="text" id="email" name="email" value="'.$email.'"><br>
+        <input type="submit" value="Zarejestruj" name="rejestruj">
+      </form>';
+
 ?>
 
-
-   
 
 	<!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
