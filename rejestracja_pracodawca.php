@@ -62,21 +62,25 @@ if (isset($_POST['rejestruj']))
 	// sprawdzamy czy login nie jest ju� w bazie
 	if (mysqli_num_rows($conn->query("SELECT Nazwa FROM pracodawcy WHERE Nazwa = '".$login."';")) == 0) 
 	{
-		if ($haslo1 == $haslo2) // sprawdzamy czy hasła takie same
-		{
-		    $md5haslo=md5($haslo1);
- 		    $sql = "INSERT INTO pracodawcy
-                     (idPracodawcy, Nazwa, haslo, email, ip, Data_Rejestracji, Data_Logowania)
-                     VALUES (null, '$login', '$md5haslo', '$email', '$ip', NOW(), NOW());";
-		    $result = $conn->query($sql);
-		    
-		    if (!$result) {
-		        trigger_error('Invalid query: ' . $conn->error);
-		    }
-
-			echo "Konto zostało utworzone!";
-		}
-		else echo "Hasła nie są takie same";
+	    if (mysqli_num_rows($conn->query("SELECT Nazwa FROM pracodawcy WHERE email = '".$email."';")) == 0) 
+	    {
+    		if ($haslo1 == $haslo2) // sprawdzamy czy hasła takie same
+    		{
+    		    $md5haslo=md5($haslo1);
+     		    $sql = "INSERT INTO pracodawcy
+                         (idPracodawcy, Nazwa, haslo, email, ip, Data_Rejestracji, Data_Logowania)
+                         VALUES (null, '$login', '$md5haslo', '$email', '$ip', NOW(), NOW());";
+    		    $result = $conn->query($sql);
+    		    
+    		    if (!$result) {
+    		        trigger_error('Invalid query: ' . $conn->error);
+    		    }
+    
+    			echo "Konto zostało utworzone!";
+    		}
+    		else echo "Hasła nie są takie same";
+	    }
+	    else echo "Podany email jest już wprowadzony.";
 	}
 	else echo "Podany login jest już zajęty.";
 }
