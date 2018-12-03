@@ -13,6 +13,10 @@ session_start();
 
 include 'header.php';
 
+
+
+echo('<a href="login_student.php" style="width: 400px; text-decoration: none;"><span>&#8592;</span></a>');
+
 if(empty($_POST)) {
     include 'logout.php';
 }
@@ -148,6 +152,21 @@ if ($result_sqlIdStudenta->num_rows > 0) {
     // MAIN CODE STARTS HERE
     // poczatek strony
     echo "<h2>WITAJ STUDENCIE, WYPEŁNIJ ANKIETĘ</h2>";
+    //opis formularza i zasady wypełniania anekiety
+    
+        $select_opis = 'SELECT Opis_form_stud FROM formularze where idFormularze = ' .$formularz_id;
+        $result_opis = $conn->query($select_opis);
+    
+        if (! $result_opis) {
+            trigger_error('Invalid query: ' . $conn->error);
+        }
+        
+        
+        $row = mysqli_fetch_assoc($result_opis);
+        $opis=$row["Opis_form_stud"];
+        
+        echo $opis;
+          
     
     // pobierz liste pytan
     $sql = "SELECT idPytania, Tresc, Typ, ilosc_wyborow FROM v_pytania_z_formularza where idFormularze = " .$formularz_id;

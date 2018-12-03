@@ -10,9 +10,10 @@
 	<link rel="stylesheet" type="text/css" href="style.css.php">
     
     <?php
+    session_start();
     include 'polaczenie_do_bazy.php';
     include 'logout.php';
-    include 'header.php';
+   // include 'header.php';
           
         $sugestia = $_POST["sugestia"];
     if (isset($sugestia)){
@@ -36,7 +37,7 @@
         
 //          echo('<a href="zapisz_ankiete.php" class="option-input" style="width: 150px; text-decoration: none;">Wroc na poczatek</a>');
     } else{
-         echo('<a href="panel_pracodawca.php" class="option-input" style="width: 150px; text-decoration: none;">Wroc do panelu pracodawcy</a>');
+         echo('<a href="zapisz_ankiete_student.php" class="option-input" style="width: 150px; text-decoration: none;">Wroc do podsumowania</a>');
      } 
     ?>
     

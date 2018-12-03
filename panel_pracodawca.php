@@ -19,7 +19,7 @@
     session_start();
 
     include 'logout.php';
-    include 'header.php';
+//include 'header.php';
     include 'polaczenie_do_bazy.php';
 
     if (isset($_POST['ilosc_osob'])) {
