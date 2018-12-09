@@ -116,36 +116,7 @@ if ($result_sqlIdStudenta->num_rows > 0) {
         echo "\r\n";
         echo '</script>';
         
-    // generuj javaskrypty do pola inne
-        echo '<script type="text/javascript">';
-        $sql_inne = "SELECT idPytania 
-                       FROM v_pytania_z_formularza pf
-                       join mozliwe_odpowiedzi mo on mo.Pytania_idPytania = pf.idPytania
-                      where pf.idFormularze = " . $formularz_id . " 
-                        and mo.Tresc = 'Inne'";
-        $result_inne = $conn->query($sql_inne);
-        if ($result_inne->num_rows > 0) {
-            while ($row = $result_inne->fetch_assoc()) {
 
-                $idPytania = $row["idPytania"];
-                
-                echo 'function showHideInput' . $idPytania . '() {';
-                echo "\r\n";
-
-                echo '    if (document.getElementById(\'inne' . $idPytania . '\').checked) {';
-                echo '        document.getElementById(\'div' . $idPytania . '\').style.display = \'block\';';
-                echo '    }';
-                echo '    else document.getElementById(\'div' . $idPytania . '\').style.display = \'none\';';
-                echo '}';
-                
-                echo "\r\n";
-                echo "\r\n";
-                
-            }
-        }
-        echo "\r\n";
-        echo '</script>';
-        
         
    
     echo '<div>';
@@ -210,8 +181,41 @@ if ($result_sqlIdStudenta->num_rows > 0) {
  
      
      
+     // generuj javaskrypty do pola inne
+     echo '<script type="text/javascript">';
+     $sql_inne = "SELECT idPytania
+                       FROM v_pytania_z_formularza pf
+                       join mozliwe_odpowiedzi mo on mo.Pytania_idPytania = pf.idPytania
+                      where pf.idFormularze = " . $formularz_id . "
+                        and mo.Tresc = 'Inne'";
+     $result_inne = $conn->query($sql_inne);
+     if ($result_inne->num_rows > 0) {
+         while ($row = $result_inne->fetch_assoc()) {
+             
+             $idPytania = $row["idPytania"];
+             
+             echo 'var maxSelected' . $idPytania . ' = 0;';
+             echo "\r\n";
+             echo 'function showHideInput' . $idPytania . '() {';
+             echo "\r\n";
+             
+             echo '    if (document.getElementById(\'inne' . $idPytania . '\').checked  && maxSelected' . $idPytania . '==0) {';
+             echo '        document.getElementById(\'div' . $idPytania . '\').style.display = \'block\';';
+             echo '    }';
+             echo '    else document.getElementById(\'div' . $idPytania . '\').style.display = \'none\';';
+             echo '}';
+             
+             echo "\r\n";
+             echo "\r\n";
+             
+         }
+     }
+     echo "\r\n";
+//      echo '</script>';
+     
+     
      //generuj javaskrpyty do ilosci zaznaczenia checkboxow
-     echo '<script>';
+//      echo '<script>';
      $sql_checkboxy = "SELECT idPytania, ilosc_wyborow FROM v_pytania_z_formularza where idFormularze = " .$formularz_id . " and Typ = 'C'";
      $result_checkboxy = $conn->query($sql_checkboxy);
      if ($result_checkboxy->num_rows > 0) {
@@ -224,6 +228,13 @@ if ($result_sqlIdStudenta->num_rows > 0) {
              echo '    if($(\'input.limited-check-' . $idPytania . ':checked\').length > ' . $ilosc_wyborow .') {';
              echo '      this.checked = false;';
              echo '    }';
+             
+             echo "if ($('input.limited-check-" . $idPytania . ":checked').length >= " . $ilosc_wyborow .") {";
+             echo "    maxSelected" . $idPytania . " = 1;";
+             echo "} else {";
+             echo "    maxSelected" . $idPytania . " = 0;";
+             echo "}";
+             
              echo '});';
              echo "\r\n";
              echo "\r\n";
