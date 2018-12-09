@@ -21,11 +21,21 @@ if (isset($_SESSION['type'])) {
     exit;
 }
 
-if(isset($_POST['user_id'])) {
+if(isset($user_id)) {
     
+    if($type == "pracodawca"){
+//         Echo $user_id;
+//         echo'blabal';
+        echo '<div class="right"><a href="?wyloguj=1">Wyloguj</a></div>';
+    }else {
+//     echo $user_id;
+    echo '<div class="right" style="color:black; ">Kliknij, aby wyjsc do strony głównej:</br></br><a href="?wyloguj=1" style="color:red;" >'.$user_id.'</a></div>';
     // if user type  = student to w wtedy wyswietli link z numerem indeksu a w przeciwnym wypadku tak jak bylo
-    echo '<div class="right"><a href="?wyloguj=1">Wyloguj</a></div>';
-//    echo '<a href="?wyloguj=1">[Wyloguj]</a>';
+     
+    }
+    
+    
+    
     if (isset($_GET['wyloguj'])==1)
     {
         $_SESSION['zalogowany'] = false;

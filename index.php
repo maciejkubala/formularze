@@ -20,7 +20,16 @@
         include 'logout.php';
         if($_SESSION['type'] == 'pracodawca') {
             header("Location: panel_pracodawca.php");
+        }else{
+            
+            $_SESSION['zalogowany'] = false;
+            session_destroy();
+            $url = "index.php";
+            header("Location: ".$url);
+            die();
         }
+        
+       
     
     } else {
         //wyswietl formularz wyboru student/pracodawca

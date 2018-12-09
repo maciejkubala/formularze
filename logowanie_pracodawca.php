@@ -14,19 +14,7 @@
 <?php
 session_start();
 include 'header.php';
-//-------------------------------   
-// POLACZENIE DO BAZY
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "baza_formularzy";
-
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-$conn->set_charset("utf8");
+include 'polaczenie_do_bazy.php';
 ?>
 
 <?php
@@ -89,10 +77,7 @@ if (isset($_SESSION['zalogowany'])==1) {
         $url = "panel_pracodawca.php";
         header("Location: ".$url);
         die();
-        
-    	//echo "Witaj <b>".$_SESSION['login']."</b><br><br>";
-    	
-    	//echo '<a href="?wyloguj=1">[Wyloguj]</a>';
+     
     }
 }
 ?>
@@ -106,7 +91,8 @@ if (isset($_SESSION['zalogowany'])==0 || $_SESSION['zalogowany']==false) :
 <form method="POST" action="logowanie_pracodawca.php">
 <b>Login:</b> <input type="text" name="login"><br>
 <b>Hasło:</b> <input type="password" name="haslo"><br>
-<input type="hidden" id="type" name="type" value="pracodawca">';
+<input type="hidden" id="type" name="type" value="pracodawca">
+<input type="hidden" id="user_id" name="user_id" value="pracodawca">
 <input type="submit" value="Zaloguj" name="loguj">
 </form> 
 

@@ -58,7 +58,23 @@ echo '<div>';
 echo "<h2>WITAJ PRACODAWCO, ZAZNACZ WAGI PYTAń i Odpowiedzi:</h2>";
 
 
+/* $select_opis = 'SELECT Opis_form_prac FROM formularze where idFormularze = ' .$formularz_id;
+$result_opis = $conn->query($select_opis);
 
+if (! $result_opis) {
+    trigger_error('Invalid query: ' . $conn->error);
+}
+
+if ($result_opis->num_rows > 0) {
+    // dla kazdego wiersza zwr�conego
+    while ($row = $result_opis->fetch_assoc()) {
+        
+        $opis=$row["Opis_form_prac"];
+        
+        echo $opis;
+    }
+}
+ */
 
 // jesli konkurs istnieje to wczytujemy istniejacy, w przeciwnym wypadku tworzymy nowy konkurs
 if ($_POST) {
@@ -69,7 +85,18 @@ if ($_POST) {
     $pracodawca_id = $_POST['user_id'];
     
     
+    $select_opis = 'SELECT Opis_form_prac FROM formularze where idFormularze = ' .$formularz_id;
+    $result_opis = $conn->query($select_opis);
     
+    if (! $result_opis) {
+        trigger_error('Invalid query: ' . $conn->error);
+    }
+    
+    
+    $row = mysqli_fetch_assoc($result_opis);
+    $opis=$row["Opis_form_prac"];
+    
+    echo $opis;
     
     
     

@@ -14,42 +14,10 @@
     <?php 
      session_start();
     
-    include 'header.php';
+   // include 'header.php';
     include 'polaczenie_do_bazy.php';
     INCLUDE 'LOGOUT.PHP';
-    
    
-   
-  /*  $NAME= $_FILES['Plik_Do_CV']['name'];
-   
-   $TMP_NAME= $_FILES['Plik_Do_CV']['tmp_name'];
-   
-   $SUBMITBUTTON= $_POST['submit'];
-   
-   $POSITION= STRPOS($NAME, ".");
-   
-   $FILEEXTENSION= SUBSTR($NAME, $POSITION + 1);
-   
-   $FILEEXTENSION= STRTOLOWER($FILEEXTENSION); 
-   
-   $DESCRIPTION= $_POST['Opis_Pliku'];*/
-   
-   
-   
-/*    IF (ISSET($NAME)) {
-       
-       $PATH= 'pliki/';
-       
-       IF (!EMPTY($NAME)){
-           IF (MOVE_UPLOADED_FILE($TMP_NAME, $PATH.$NAME)) {
-               ECHO 'Plik został pobrany prawidłowo!';
-               
-           }
-       }
-   } */
-   
-   
-    
     //znajdz id studenta o numerze inkdeksu z session
     // zapytanie o odpowiedzi do pytania -> patrz parameter idPytania
     $sqlIdStudenta = "SELECT idStudenci FROM studenci WHERE Nr_Indeksu = ".$_SESSION['user_id'];
