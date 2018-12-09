@@ -115,19 +115,22 @@
         //echo("Student: ".$id."<br/>");
         //zapisz odpowiedzi studenta z ankiety
         foreach($_POST as $key => $value) {
-//             echo '<br>';
-//             echo '<br>';
-//             echo("key: ".$key." value: ".$value."<br/>");
+//              echo '<br>';
+//              echo '<br>';
+//              echo("key: ".$key." value: ".$value."<br/>");
             
-            if((substr($key, 0, 4) == "inne") && is_array($value)) {
-                // pomiń checkbox z pytania inne
-                // pytanie inne bedzie zapisane z textboxa
-            }
-            elseif($key == "formularz_id" || $key == "type" || $key == "user_id") {
+//             if((substr($key, 0, 4) == "inne") && is_array($value)) {
+//                 echo 'substr($key, 0, 4) == "inne") && is_array($value)';
+//                 echo '<br>';
+//                 // pomiń checkbox z pytania inne
+//                 // pytanie inne bedzie zapisane z textboxa
+//             }
+            if($key == "formularz_id" || $key == "type" || $key == "user_id") {
                 // pomiń parametr formularz_id
             }
-            elseif((substr($key, 0, 4) == "inne") && ($value != "")) {
-//                 echo '<br>';
+            elseif((substr($key, 0, 4) == "inne")) {
+//                 echo("INNE key: ".$key." value: ".$value."<br/>");
+//                  echo '<br>';
 //                 echo 'inne';
                 //INNE
                 $id_pytania = substr($key, 4, strpos($key, 'o') - 4);
@@ -150,6 +153,10 @@
                 
             }
             elseif (is_array($value)){
+                
+//                 foreach($value as $odpowiedz) {
+//                     echo 'checkbox value = ' . $odpowiedz, '<br>';
+//                 }
 //                 echo '<br>';
 //                 echo 'checkbox';
 
@@ -158,13 +165,16 @@
                 
                 //CHECKBOXY
                 foreach($value as $odpowiedz){
-                    $sql_insert = 'INSERT INTO odpowiedzi_studentow (`Studenci_idStudenci`, `Pytania_Z_Formularzy_idPytania_Z_Formularzy`, `Mozliwe_Odpowiedzi_idMozliwe_Odpowiedzi`)
-                            VALUES('.$id.','.$id_pytania_z_formularzy.','.$odpowiedz.')';
-//                     echo '<br>';
-//                     echo '$sql_insert = ' . $sql_insert;
-                    $insert_result = $conn->query($sql_insert);
-                    if (! $insert_result) {
-                        trigger_error('Invalid query: ' . $conn->error);
+                    
+                    if ((substr($odpowiedz, 0, 4) != "inne")) {
+                        $sql_insert = 'INSERT INTO odpowiedzi_studentow (`Studenci_idStudenci`, `Pytania_Z_Formularzy_idPytania_Z_Formularzy`, `Mozliwe_Odpowiedzi_idMozliwe_Odpowiedzi`)
+                                VALUES('.$id.','.$id_pytania_z_formularzy.','.$odpowiedz.')';
+    //                     echo '<br>';
+    //                     echo '$sql_insert = ' . $sql_insert;
+                        $insert_result = $conn->query($sql_insert);
+                        if (! $insert_result) {
+                            trigger_error('Invalid query: ' . $conn->error);
+                        }
                     }
                 }
             }

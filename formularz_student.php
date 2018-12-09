@@ -43,7 +43,7 @@ function generujPytanie($v_idPytania, $v_connection, $v_typ, $v_ilosc_wyborow)
             if ($v_typ == 'C') {
                 // jesli inne dodaj input box
                 if($tresc == "Inne") {
-                    echo '<input type="checkbox" class="option-input limited-check-' . $v_idPytania . '"  id="inne' . $v_idPytania . '" name="' . $v_idPytania . '[]" value="' . $idMozliwe_Odpowiedzi . '" onclick="javascript:showHideInput' . $v_idPytania . '();">' . $tresc . '<br/>';
+                    echo '<input type="checkbox" class="option-input limited-check-' . $v_idPytania . '"  id="inne' . $v_idPytania . '" name="' . $v_idPytania . '[]" value="inne' . $idMozliwe_Odpowiedzi . '" onclick="javascript:showHideInput' . $v_idPytania . '();">' . $tresc . '<br/>';
                     echo '<div id="div' . $v_idPytania . '" style="display:none"><input type="text" style="width:500px;" id="inne' . $v_idPytania . 'odp' . $idMozliwe_Odpowiedzi . '" name="inne' . $v_idPytania . 'odp' . $idMozliwe_Odpowiedzi . '"></div>';
                 } else {
                     echo '<input type="checkbox" class="option-input limited-check-' . $v_idPytania . '"  id="' . $v_idPytania . '" name="' . $v_idPytania . '[]" value="' . $idMozliwe_Odpowiedzi . '">' . $tresc . '<br/>';
