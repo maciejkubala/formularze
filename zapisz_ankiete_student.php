@@ -16,7 +16,7 @@
     
    // include 'header.php';
     include 'polaczenie_do_bazy.php';
-    INCLUDE 'LOGOUT.PHP';
+    include 'logout.php';
    
     //znajdz id studenta o numerze inkdeksu z session
     // zapytanie o odpowiedzi do pytania -> patrz parameter idPytania
@@ -61,7 +61,7 @@
     function pobierz_id_pytania_z_formularzy($v_id_pytania, $v_id_formularza, $v_connection) {
         
         $sql_id_pytania_z_formularzy = "SELECT idPytania_Z_Formularzy 
-                                          FROM baza_formularzy.pytania_z_formularzy 
+                                          FROM pytania_z_formularzy 
                                          WHERE Formularze_idFormularze = " . $v_id_formularza . "
                                           AND Pytania_idPytania = " . $v_id_pytania;
         
