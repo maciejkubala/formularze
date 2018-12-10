@@ -4,16 +4,14 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <!-- Bootstrap CSS -->
+	<!-- <meta http-equiv="refresh" content="10" > -->
     
-	<link rel="stylesheet" type="text/css" href="style.css.php">
-    
-    	
-  </head>
-  <body>
-    
+	<link rel="stylesheet" type="text/css" href="style.css">	
+  </head> 	
+ <body>
     <?php 
+   
+    include 'polaczenie_do_bazy.php';
     session_start();
     if (isset($_SESSION['user_id'])) {
         
@@ -32,15 +30,67 @@
        
     
     } else {
-        //wyswietl formularz wyboru student/pracodawca
+        
+        echo'<div id="container">';
+        //tu będziemy przechowywać wszystko co ogólne
+        
+        echo'<div id="header">';
+        //Tu będzie przycisk home i napis powitalny!
+        
+        echo'<div style="float:left;">
+                <form method="post" action="login_student.php">
+                <button type="button" class="btn">HOME</button>
+                </div>';
+        
+        echo'<div style="text-align:center; font-size: 24px; text-shadow: 8px 5px 8px rgba(0,0,0,0.81); ">
+                Witaj!
+                Znajdujesz się na stronie internetowej stworzonej w celu zbierania informacji od studentów PWr poprzez ankiety
+                oraz tworzenia własnego systemu punktowego do stworzonych ankiet.
+                </div>';
+        
+        echo'</div>';
+        
+        echo'<div id="central">';
+        //pojemnik na przechowanie napisu wyboru i selecta
+        
+        echo'<div style="float: left;">';
         echo '<form method="post" action="login_student.php">
+              <label for="type">Kim jesteś?:</label>
+              <select name="type" class="custom-select" id="type">
+              <option value="student">Student</option>
+              <option value="pracodawca">Pracodawca</option>
+              </select><br/>
+              <input type="submit" class="option-input" style="width: 100px;" value="Zatwierdź">
+              </form>';
+        
+        echo'</div>';
+        
+        echo'<div style="clear:both;">';
+        echo'</div>';
+        echo'</div>';
+        
+        echo'<div id="footer">';
+        //tu będą informacje/ kontakt do autora oraz że strona została zrobiona w ramach pracy inżynierskiej 2018 PWr!
+        echo'</div>';
+        
+        echo'</div>';
+        
+        
+        
+        
+        //wyswietl formularz wyboru student/pracodawca
+        /* echo'<div id="menu">';
+        echo'<div id="napis">';
+        echo '<form  method="post" action="login_student.php">
         <label for="type">Witaj, kim jesteś?:</label>
         <select name="type" id="type">
         <option value="student">Student</option>
         <option value="pracodawca">Pracodawca</option>
         </select><br/>
-        <input type="submit" class="option-input" style="width: 100px;" value="Zatwierdź">
+        <input type="submit" class="option-input" style="width: 220px;" value="Zatwierdź">
         </form>';
+        echo'</div>';
+        echo'</div>'; */
     }
     ?>
    

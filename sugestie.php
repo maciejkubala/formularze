@@ -7,7 +7,7 @@
 
     <!-- Bootstrap CSS -->
     
-	<link rel="stylesheet" type="text/css" href="style.css.php">
+	<link rel="stylesheet" type="text/css" href="style.css">
     
     <?php
     session_start();

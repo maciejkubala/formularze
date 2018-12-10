@@ -16,7 +16,7 @@ header("Content-type: text/css");
     width: 200px;
     margin-left: -80px;
     margin-top: -80px;
-    opacity: 0;
+    opacity: 10;
   }
 }
 
@@ -26,11 +26,11 @@ input {
 
 select {
 	width: 220px;
-
+	
 }
 
 .option-input {
-  -webkit-appearance: none;
+  -webkit-appearance:none;
   -moz-appearance: none;
   -ms-appearance: none;
   -o-appearance: none;
@@ -46,6 +46,7 @@ select {
   background: #cbd1d8;
   border: none;
   color: #000000;
+  font:400;
   cursor: pointer;
   display: inline-block;
   margin-right: 0.5rem;
@@ -64,7 +65,7 @@ select {
   height: 20px;
   width: 20px;
   position: absolute;
-  content: '✔';
+  content: none;
   display: inline-block;
   font-size: 12px;
   text-align: center;
@@ -88,9 +89,9 @@ select {
 }
 #menu
 {	background-color: rgba(1, 181, 255, 0.3);
-	background: rgba(1, 181, 255, 0.3);
+	background: rgba(1, 181, 255, 0.8);
 	color: rgba(f, f, f, f);
-	border:inset 6px #050da1;
+	border:none;
 -moz-border-radius-topleft: 25px;
 -moz-border-radius-topright:25px;
 -moz-border-radius-bottomleft:25px;
@@ -106,21 +107,34 @@ border-bottom-right-radius:25px;
 	font-size: 24px;
 	width: 120px;
 	lenght: 200px;
-	possition: absolute;
 	padding: 150px;
 	margin-left: auto;	
 	margin-right: auto;
-	margin-top: 30px;
-	margin-: 100px;
+	margin-top: 70px;
+	margin-bottom: 100px;
+	position: static;
 }
+
+#napis
+{position: relative;
+margin-right: 100%;
+ padding-left: 0px;
+    width: 200px;
+    padding-right: 0px;
+    right: 40px;
+    margin-right: 0px;
+    bottom: 10px;
+    font-weight: 900;
+}
+
  body { 	
   background-image: url("obrazytla/tlo.jpg");
-   background-size: 1600px 830px;
- background-repeat: repeat;
-	         width: 1000px;
-  	         color: #000000;
-       font-family:  "Lato", sans-serif;
-        text-align: left;
+  background-size: 1600px 830px;
+  background-repeat: repeat;
+ 
+  color: #000000;
+  font-family:  "Lato", sans-serif;
+  text-align: left;
   } 
 body div {
   padding: 1rem;
@@ -145,17 +159,13 @@ body label {
     padding: 10px;
     background-color: RoyalBlue;
     text-align: center;
-    
+} 
 table, th, td {
    border: 1px solid black;
    text-align: center;
 }
-
-.options{
-}
  	
 .btn {
-	 float: left;
     background-color: DodgerBlue;
     border: none;
     color: white;
@@ -165,15 +175,32 @@ table, th, td {
 }
 
 .btn:hover {
-    float: left;
+    background-color: RoyalBlue;
 }
 
-#mainbox1
+ #conteiner
 {
-	background-color: rgba(1, 181, 255, 0.3);
-	background: rgba(1, 181, 255, 0.3);
+	width: 100%;
+	margin-left: auto;	
+	margin-right: auto;	 
+}
+ #header
+{	
+	background-color: rgba(1, 181, 255, 0.7);
+	margin:                             10px;
+	font-size:         					24px;	
+	font-weight:     				   900px;
+	color:      					 #000000;
+	border-radius: 20px;
+	width: 100%;
+	
+}
+ 
+#central
+{background-color: rgba(1, 181, 255, 0.3);
+	background: rgba(1, 181, 255, 0.8);
 	color: rgba(f, f, f, f);
-	border:inset 6px #050da1;
+	border:none;
 -moz-border-radius-topleft: 25px;
 -moz-border-radius-topright:25px;
 -moz-border-radius-bottomleft:25px;
@@ -189,38 +216,24 @@ border-bottom-right-radius:25px;
 	font-size: 24px;
 	width: 120px;
 	lenght: 200px;
-	possition: absolute;
 	padding: 150px;
 	margin-left: auto;	
 	margin-right: auto;
-	margin-top: 30px;
-	margin-: 100px;
-
+	margin-top: 70px;
+	margin-bottom: 100px;
+	position: static;	
 }
-
-#conteiner
-{
-	width: 1200px;
-	margin-left: auto;	
-	margin-right: auto;	 
-}
-
-#header
-{	
-	background-color: rgba(1, 181, 255, 0.3);
-	margin:                             10px;
-	font-size:         					44px;	
-	font-weight:     				   900px;
-	width:       					   100px;
-	color:      					 #00000;
-}
-
-#central
-{background-color: 				   red;
-
-}
- 	 	
 #footer
-{background-color: 				   blue;
-
+{
+ position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  lenght:200px; 
+  background-color: RGBA(0,14,0,0.54);
+  color: white;
+  text-align: center;
 }
+
+
+
