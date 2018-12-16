@@ -26,10 +26,10 @@ if(isset($user_id)) {
     if($type == "pracodawca"){
 //         Echo $user_id;
 //         echo'blabal';
-        echo '<div class="right"><a href="?wyloguj=1">Wyloguj</a></div>';
+        echo '<div class="btn btn-primary" style="top:0px; right:0px; float:left; margin-right: 4px;"><a class="defaultFont" style="color:white; font-size:14px;" href="?wyloguj=1">Wyloguj</a></div>';
     }else {
 //     echo $user_id;
-    echo '<div class="right" style="color:black; ">Kliknij, aby wyjsc do strony głównej:</br></br><a href="?wyloguj=1" style="color:red;" >'.$user_id.'</a></div>';
+    echo '<div class="btn btn-primary" style="top:0px; right:0px; float:left; margin-right: 4px;">Student:<i class="defaultFont" style="color:white; font-size:14px;">'.$user_id.'</i></div>';
     // if user type  = student to w wtedy wyswietli link z numerem indeksu a w przeciwnym wypadku tak jak bylo
      
     }

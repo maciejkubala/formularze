@@ -5,9 +5,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-<!-- Bootstrap CSS -->
-<link rel="stylesheet" type="text/css" href="style.css">
 
+    <!-- Optional JavaScript -->
+  <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
 </head>
 <body>
     
@@ -15,15 +20,18 @@
     session_start();
 
     include 'logout.php';
-    include 'header.php';
+    //include 'header.php';
     include 'polaczenie_do_bazy.php';
-
+    echo'<div style="display: block; padding-right:42%;">
+                <a class="btn btn-primary" style="color: white; float; right;"href="panel_pracodawca.php" role="button"><i class="fa fa-home"></i>PANEL PRACODAWCY</a>
+            </div>';
+    
     if (! empty($_POST)) {
 
         $nazwa_konkursu = $_POST['nazwa_konkursu'];
         $formularz_id = $_POST['formularz_id'];
         $opis_stanowiska = $_POST ['opis'];
-        echo $opis_stanowiska;
+        //echo $opis_stanowiska;
         if (! empty($_POST['konkurs_id'])) {
             $konkurs_id = $_POST['konkurs_id'];
         }
@@ -36,7 +44,7 @@
             // zapisz konkurs do bazy (tabela konkursy prac)
             $insert_sql = 'INSERT INTO konkursy_pracodawcow (Formularze_idFormularze, Pracodawcy_idPracodawcy, Nazwa, Opis_Stanowiska)
 	                       VALUES (' . $formularz_id . ', ' . $_SESSION['user_id'] . ' ,"' .  $nazwa_konkursu . '","' .$opis_stanowiska. '")'; 
-            echo $insert_sql;
+            
             
             
             $update_opis = '';
@@ -109,8 +117,8 @@
         $row = mysqli_fetch_assoc($result_nazwa_konkursu);
         $nazwa_konkursu = $row['Nazwa'];
                
-        
-        echo 'Zapisano konkurs: "' .$nazwa_konkursu.'"';
+        echo'<div style="clear:both;" class="defaultDiv defaultFont">';
+        echo 'Zapisano konkurs: <b>' .$nazwa_konkursu.'</b>';
         
         
         //oblicz wage maksymalna
@@ -124,7 +132,7 @@
                                        Opis_Stanowiska = "'.$opis_stanowiska .'"
                                     where idKonkursy_Pracodawcow = ' . $konkurs_id.'';
         
-        echo $sql_update_maks_punktow;
+     
         
         if (! $sql_update_maks_punktow) {
             trigger_error('Invalid query: ' . $conn->error);
@@ -135,21 +143,20 @@
         
         
         echo "</br></br>";
-        echo "Maksymalna wartosc punktow: ";
-        echo $maks_punktow;
+        echo "Maksymalna wartosc punktow do zdobycia: ";
+        echo '<b>'.$maks_punktow.'</b>';
         echo "</br></br>";
         
     } else {}
     // przycisk powrotu do index.php
     
         
-    echo ('<a href="panel_pracodawca.php" class="option-input" style="width: 150px; text-decoration: none;">Wroc do panelu pracodawcy</a><br/><br/><br/>');
+    echo ' <a href="panel_pracodawca.php" class="btn btn-primary">Wroc do panelu pracodawcy</a>
+        </div>';
+    echo'<div id="footer"> <div class="row"><div style="padding:20px; margin-left:30%; margin-right:5%;">Strona internetowa została stworzona w ramach pracy inżynierskiej 2018!
+            </div><b style="float:right; padding:20px;">Kontakt:</b><a style="  margin-right:auto;" href="www.facebook.pl/maciek.kubala.1" class="facebook fa fa-facebook"></a></div></div>';
+    echo'</div>';
     ?>
 
-    <!-- Optional JavaScript -->
-	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 </body>
 </html>

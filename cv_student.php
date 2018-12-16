@@ -1,12 +1,13 @@
-    <?PHP
+    <?php
+  
     echo ' <br>';
     echo ' <br>';
     echo ' <form action="zapisz_ankiete_student.php" method=\'post\' enctype="multipart/form-data">';
-    echo ' <!--<input type="text" name="Opis_Pliku"/><br><br>-->';
-    echo ' <input type="file" name="Plik_Do_CV" style="width:400px;" /><br><br>';
+    echo ' <input type="file" class="file" name="Plik_Do_CV" style="width:80%; margin-top: 23px;" />';    
     echo ' <input type="hidden" id="type" name="type" value="' . $_POST["type"] . '">';
     echo ' <input type="hidden" id="user_id" name="user_id" value="' . $_POST["user_id"] . '">';
-    echo ' <input type="submit" name="submit" value="Upload CV" style="width:200px;"/>';
+    echo'</br></br></br>'; 
+    echo ' <input type="submit" style="width: 80%" class="btn btn-primary" name="submit" value="Wyślij"/>';
     echo ' </form>';
 
     // 1 BLOCK
@@ -24,13 +25,12 @@
 
         $FILEEXTENSION = STRTOLOWER($FILEEXTENSION);
 
-        // $DESCRIPTION= $_POST['Opis_Pliku'];
 
-        IF (ISSET($NAME)) {
+        IF (isset($NAME)) {
 
-            $PATH = 'pliki/';
+            $path = 'pliki/';
 
-            $newFileName = $PATH . $_SESSION['user_id'] . '_' . $NAME;
+            $newFileName = $path . $_SESSION['user_id'] . '_' . $NAME;
             IF (! EMPTY($NAME)) {
                 IF (MOVE_UPLOADED_FILE($TMP_NAME, $newFileName)) {
 
@@ -46,8 +46,8 @@
                         trigger_error('Invalid query: ' . $conn->error);
                     }
 
-                    // DIE();
-                    ECHO 'Plik został pobrany prawidłowo!';
+                    
+                    echo'Plik został pobrany prawidłowo!';
                 }
             }
         }

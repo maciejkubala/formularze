@@ -4,17 +4,33 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" type="text/css" href="style.css">
+    
+	<link rel="stylesheet" type="text/css" href="style.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
    <title>boom</title>
   </head>
   <body>
   
 <?php
 
-include 'header.php';
+//include 'header.php';
 include 'polaczenie_do_bazy.php';
+$konto=true;
+echo'<div style="display: block; padding-right:42%;">
+                <a class="btn btn-primary" style="color: white; float; right;"href="index.php" role="button"><i class="fa fa-home"></i> HOME</a>
+            </div>';
+echo'<div style="text-align: center;" id="header" class="defaultDiv">';
+echo'<div class="defaultFont" style="font-weight: 700;">Pracodawco!
+            </div>';
+
+echo'<div class="defaultFont" style="display: inline-block;">
+                W celu rejestracji nowego konta wypełnij poniższy formularz.
+                </div>';
+echo'</div>';
 
 if(!isset($_POST['email'])) {
     $email = "";
@@ -23,6 +39,8 @@ if(!isset($_POST['email'])) {
 if(!isset($_POST['login'])) {
     $login = "";
 }
+echo '<div class="defaultDiv defaultFont" style="width: 50%">
+    <form name="formRejestracja" method="POST" action="rejestracja_pracodawca.php">';
 //-------------------------------
 // POLACZENIE DO BAZY
 
@@ -41,14 +59,16 @@ function filtruj($zmienna)
 }
 
 if (isset($_POST['rejestruj'])) 
-{
+{   
 	$login = filtruj($_POST['login']);
 	$haslo1 = filtruj($_POST['haslo1']);
 	$haslo2 = filtruj($_POST['haslo2']);
 	$email = filtruj($_POST['email']);
 	$ip = filtruj($_SERVER['REMOTE_ADDR']);
 	
+	
 	//Valid email!
+	if( (!empty($login)) && (!empty($email)) && (!empty($haslo1)) && (!empty($haslo2))){
 	if(filter_var($email, FILTER_VALIDATE_EMAIL)) {
     		// sprawdzamy czy login nie jest ju� w bazie
     	if (mysqli_num_rows($conn->query("SELECT Nazwa FROM pracodawcy WHERE Nazwa = '".$login."';")) == 0) 
@@ -60,7 +80,7 @@ if (isset($_POST['rejestruj']))
     	        $lowercase = preg_match('@[a-z]@', $haslo1);
     	        $number    = preg_match('@[0-9]@', $haslo1);
     	        
-    	        if($uppercase && $lowercase && $number && strlen($haslo1) > 9) {
+    	        if($uppercase && $lowercase && $number && strlen($haslo1) >= 8) {
     	        
         	        if ($haslo1 == $haslo2) // sprawdzamy czy hasła takie same
             		{
@@ -74,39 +94,44 @@ if (isset($_POST['rejestruj']))
             		        trigger_error('Invalid query: ' . $conn->error);
             		    }
             
-            			echo "Konto zostało utworzone!";
+            			echo '<div class="defaultFont" style="font-weight:700;">Konto zostało utworzone!</div>';
+            			$konto = false;
             			echo "<br>";
-            			echo "<br>";
-            			echo('<a href="logowanie_pracodawca.php" class="label" style="width: 150px; text-decoration: none;">Idź do strony logowania</a>');
+            			
+
             			
             		}
-        		    else echo "<p style='color:red;'>Hasła nie są takie same.</p>";
+            		else echo '<div class="alert alert-danger" style=" display:block; color: RGB(0,0,0); background-color: RGBA(207,0,1,0.67);"><strong>Wystąpił błąd: </strong>Hasła muszą być takie same.</div>';
     	        }
-    	        else echo "<p style='color:red;'>Hasło musi mieć minimum 8 znaków, w tym duże i małe litery i cyfry</p>";
+   	        else echo '<div class="alert alert-danger" style="display:block; color: RGB(0,0,0); background-color: RGBA(207,0,1,0.67);"><strong>Wystąpił błąd: </strong>Hasło musi mieć minimum 8 znaków, w tym cyfry oraz małe i duże litery.</div>';
     	    }
-    	    else echo "<p style='color:red;'>Podany email jest już wprowadzony.</p>";
+    	    else echo '<div class="alert alert-danger" style="display:block; color: RGB(0,0,0); background-color: RGBA(207,0,1,0.67);"><strong>Wystąpił błąd: </strong>Podany email istnieje już w bazie.</div>';
     	}
-    	else echo "<p style='color:red;'>Podany login jest już zajęty.</p>";
+    	else echo '<div class="alert alert-danger" style="display:block; color: RGB(0,0,0); background-color: RGBA(207,0,1,0.67);"><strong>Wystąpił błąd: </strong>Podany login jest już zajęty.</div>';
 	}
-	else echo "<p style='color:red;'>Niepoprawny adres email.</p>";
+	else echo '<div class="alert alert-danger" style="display:block; color: RGB(0,0,0); background-color: RGBA(207,0,1,0.67);"><strong>Wystąpił błąd: </strong>Niepoprawny adres email!</div>';
+}
+else echo '<div class="alert alert-danger" style=" display:block; color: RGB(0,0,0); background-color: RGBA(207,0,1,0.67);"><strong>Wystąpił błąd: </strong>Żadne pole nie może być puste!</div>';
 }
 
-echo '<form name="formRejestracja" method="POST" action="rejestracja_pracodawca.php">
-        <b>Login:</b> <input type="text" name="login"value="'.$login.'"><br>
-        <b>Hasło:</b> <input type="password" name="haslo1"><br>
-        <b>Powtórz hasło:</b> <input type="password" name="haslo2"><br>
-        <b>Email:</b> <input type="text" id="email" name="email" value="'.$email.'"><br>
-        <input type="submit" value="Zarejestruj" name="rejestruj">
+if($konto){
+ echo'  <b>Login:</b> <input class="form-control" type="text" name="login" placeholder="Wpisz swój login" value="'.$login.'"><br>
+        <b>Hasło:</b> <input class="form-control" type="password" name="haslo1" placeholder="Min.8 znaków, w tym: cyfra,małe i duże litery"><br>
+        <b>Powtórz hasło:</b> <input class="form-control" type="password" name="haslo2" placeholder="Powtórz hasło"><br>
+        <b>Email:</b> <input class="form-control" type="text" id="email" name="email" placeholder="Wpisz swój adres email" value="'.$email.'"><br>
+        <input class="btn btn-primary" type="submit" value="Zarejestruj" name="rejestruj">
+        
       </form>';
-
+}else{
+    echo'   <a href="logowanie_pracodawca.php" class="btn btn-primary">Idź do strony logowania</a>';
+}
+   echo'   </div>';
+   echo '</div></div>';
+   echo'<div id="footer"> <div class="row"><div style="padding:20px; margin-left:30%; margin-right:5%;">Strona internetowa została stworzona w ramach pracy inżynierskiej 2018!
+            </div><b style="float:right; padding:20px;">Kontakt:</b><a style="  margin-right:auto;" href="www.facebook.pl/maciek.kubala.1" class="facebook fa fa-facebook"></a></div></div>';
+   echo'</div>';    
 ?>
-
-
-	<!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+	
   </body>
 </html>
 <?php $conn->close(); ?>

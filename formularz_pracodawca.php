@@ -1,16 +1,17 @@
 
 <!DOCTYPE html>
-<html>
-<head>
-<link rel="stylesheet" type="text/css" href="style.css">
-</head>
-<body>
-
 <?php
+echo'<html>
+<head>';
+include 'header.php';
+echo'</head>
+<body>';
+
+
 session_start();
 
 include 'logout.php';
-include 'header.php';
+
 include 'polaczenie_do_bazy.php';
 
 // -------------------------------
@@ -25,10 +26,15 @@ function generujPytanie($v_idPytania, $v_connection)
         } else {
             $checked = '';
         }
-        echo '<input type="radio" class="option-input radio" name= "pytanie[' . $v_idPytania . ']" value = "' . $i . '"' . $checked . '/>' . $i;
+        echo '<div class="custom-control custom-radio custom-control-inline">';
+        
+        echo '<input type="radio" class="custom-control-input" id="' . $v_idPytania . '.'.$i.'" name= "pytanie[' . $v_idPytania . ']" value = "' . $i . '"' . $checked . '/>';
+        echo '<label class="custom-control-label" for="' . $v_idPytania . '.'.$i.'">'.$i.'</lavel>';
+      
+        echo '</div>';
     }
-
-    echo '</br><br/>';
+    echo '</div>';
+  
 
     $sqlOdpowiedziDoPytania = "SELECT Pytania_idPytania, idMozliwe_Odpowiedzi, Tresc FROM mozliwe_odpowiedzi WHERE Pytania_idPytania = '$v_idPytania'";
     $resultOdpowiedziDoPytania = $v_connection->query($sqlOdpowiedziDoPytania);
@@ -39,42 +45,40 @@ function generujPytanie($v_idPytania, $v_connection)
             $idMozliwe_Odpowiedzi = $row["idMozliwe_Odpowiedzi"];
 
             // generuj html dla pola input typu radio
-            echo '<li>' . $tresc . '</li>';
+            echo '<div class="row"><div style=" text-align:left; width:46%;"><li>' . $tresc . '</li></div>';
+            echo ' <div>';             
             for ($i = 0; $i <= 10; $i ++) {
                 if ($i == 5) {
                     $checked = 'checked="checked"';
                 } else {
                     $checked = '';
                 }
-                echo '<input type="radio" class="option-input radio" name= "waga[' . $idMozliwe_Odpowiedzi . ']" value = "' . $i . '"' . $checked . '/>' . $i;
+                
+                echo '<div class="custom-control custom-radio custom-control-inline">';
+                
+                echo '<input type="radio" class="custom-control-input" id="' . $v_idPytania . '.'.$i.'.' . $idMozliwe_Odpowiedzi . '" name= "waga[' . $idMozliwe_Odpowiedzi . ']" value = "' . $i . '"' . $checked . '/>';
+                echo '<label class="custom-control-label" for="' . $v_idPytania . '.'.$i.'.' . $idMozliwe_Odpowiedzi . '">'.$i.'</label>';
+                
+                echo '</div>';
+                
+                
+                
+                /* echo '<input type="radio" class="option-input radio" name= "waga[' . $idMozliwe_Odpowiedzi . ']" value = "' . $i . '"' . $checked . '/>' . $i; */
             }
-            echo '</br><br/>';
+            echo '</div></div>';
         }
     }
 }
 
 
-echo '<div>';
-echo "<h2>WITAJ PRACODAWCO, ZAZNACZ WAGI PYTAń i Odpowiedzi:</h2>";
+echo'<div style="display: block; padding-right:42%;">
+                <a class="btn btn-primary" style="color: white; float; right;"href="panel_pracodawca.php" role="button"><i class="fa fa-home"></i>PANEL PRACODAWCY</a>
+            </div>';
 
+echo'<div class="defaultFont defaultDiv" style="display:">
+               <h3> Zaznacz wagi pytań i odpowiedzi, aby stworzyć swój własny konkurs</h3>';
+            
 
-/* $select_opis = 'SELECT Opis_form_prac FROM formularze where idFormularze = ' .$formularz_id;
-$result_opis = $conn->query($select_opis);
-
-if (! $result_opis) {
-    trigger_error('Invalid query: ' . $conn->error);
-}
-
-if ($result_opis->num_rows > 0) {
-    // dla kazdego wiersza zwr�conego
-    while ($row = $result_opis->fetch_assoc()) {
-        
-        $opis=$row["Opis_form_prac"];
-        
-        echo $opis;
-    }
-}
- */
 
 // jesli konkurs istnieje to wczytujemy istniejacy, w przeciwnym wypadku tworzymy nowy konkurs
 if ($_POST) {
@@ -96,9 +100,18 @@ if ($_POST) {
     $row = mysqli_fetch_assoc($result_opis);
     $opis=$row["Opis_form_prac"];
     
-    echo $opis;
     
     
+    
+                            
+                            echo'<div style="border-top: solid 1px;">'. $opis.'</div></div>';
+                            
+                            echo '<div class="defaultDiv">';
+                            
+    
+                            
+                            
+                            
     
     $sql_konkurs_pracodawcy = 'SELECT idKonkursy_Pracodawcow 
                                  FROM konkursy_pracodawcow 
@@ -140,17 +153,23 @@ if ($_POST) {
        $row = mysqli_fetch_assoc($result_opis);
        $opis = $row['Opis_Stanowiska'];
         echo '<div>';
-        echo '<form id="ankieta_pracodawca" method="post" action="zapisz_konkurs_pracodawca.php" >';
-        echo '<label for="opis">Wpisz opis konkursu:</label>
-                        <textarea name="opis" id"opis" maxlength="250" rows="5" cols="40">'.$opis.'</textarea>';
-  
+        echo '<form style="text-align:center;" id="ankieta_pracodawca" method="post" action="zapisz_konkurs_pracodawca.php" >';
+        echo '<label class  ="defaultFont" for="opis">Wpisz opis konkursu:</label>
+                        <textarea class="form-control" name="opis" id="opis" maxlength="50" rows="5" cols="40">'.$opis.'</textarea>';
         echo '</br></br>';
-                        
+        echo '</div>';
+                  
+        
+        
+        // wyswietl wagi pytan i odpowiedzi
+        
+       // echo '</div>';
         if ($result->num_rows > 0) {
             $nr = 1; // numeracja na stronie
             while ($row = $result->fetch_assoc()) {
-                // wyswietl tresc pytania stronie
-                echo $nr . ". " . $row["TrescPytania"] . "<br>";
+                echo'<div class="defaultFont" style="border: solid 2px; border-radius: 25px; padding: 20px; margin-bottom: 10px;">';
+                echo '<div  class="row" style=" border-bottom: solid 1px">';
+                echo '<div style="width:46%; "><b>'.$nr . '.' . $row["TrescPytania"] .'</b></div>';
                 $nr ++;
 
                 $konkurs_id = $row["idKonkursy_Pracodawcow"];
@@ -163,11 +182,20 @@ if ($_POST) {
                     } else {
                         $checked = '';
                     }
-                    echo '<input type="radio" class="option-input radio" name= "pytanie[' . $v_idPytania . ']" value = "' . $i . '"' . $checked . '/>' . $i;
+                    //echo '<input type="radio" class="option-input radio" name= "pytanie[' . $v_idPytania . ']" value = "' . $i . '"' . $checked . '/>' . $i;
                     
+                    
+                      echo '<div class="custom-control custom-radio custom-control-inline">';
+                
+                echo '<input type="radio" class="custom-control-input" id="' . $v_idPytania . '.'.$i.'" name= "pytanie[' . $v_idPytania . ']"" value = "' . $i . '"' . $checked . '/>';
+                echo '<label class="custom-control-label" for="' . $v_idPytania . '.'.$i.'.">'.$i.'</label>';
+                
+                echo '</div>';
+                
+                     
                 }
-
-                echo '</br><br/>';
+                
+                echo '</div>';
                 
                 //wyswietl odpowiedzi do pytania
                 $sqlOdpowiedziDoPytania = 'SELECT distinct idKonkursy_Pracodawcow, NazwaKonkursu, Pracodawcy_idPracodawcy, idFormularze, idMozliwe_Odpowiedzi, TrescOdpowiedzi, WagaOdpowiedzi
@@ -186,21 +214,25 @@ if ($_POST) {
                         $idMozliwe_Odpowiedzi = $rowOdpowiedzi["idMozliwe_Odpowiedzi"];
                         
                         // generuj html dla pola input typu radio
-                        echo '<li>' . $tresc . '</li>';
+                        echo '<div class="row"><div style="width: 46%; text-align: left;"><li>' . $tresc . '</li></div><div>';
                         for ($j = 0; $j <= 10; $j ++) {
                             if ($j == $rowOdpowiedzi["WagaOdpowiedzi"]) {
                                 $checked = 'checked="checked"';
                             } else {
                                 $checked = '';
                             }
-                            echo '<input type="radio" class="option-input radio" name= "waga[' . $idMozliwe_Odpowiedzi . ']" value = "' . $j . '"' . $checked . '/>' . $j;
+                            echo '<div class="custom-control custom-radio custom-control-inline">';
+                            
+                            echo '<input type="radio" class="custom-control-input" id="' . $v_idPytania . '.'.$j.'.' . $idMozliwe_Odpowiedzi . '" name= "waga[' . $idMozliwe_Odpowiedzi . ']" value = "' . $j . '"' . $checked . '/>';
+                            echo '<label class="custom-control-label" for="' . $v_idPytania . '.'.$j.'.' . $idMozliwe_Odpowiedzi . '">'.$j.'</label>';
+                            
+                            echo '</div>';
                         }
-                        echo '</br><br/>';
+                        echo '</div></div>';
                     }
+                    echo '</div>';
                 }
-                    
                 
-                echo "<br><br><br><br>";
             }
             
             echo "</table>";
@@ -227,20 +259,27 @@ if ($_POST) {
         }
 
         echo '<div>';
-        echo '<form id="ankieta_pracodawca" method="post" action="zapisz_konkurs_pracodawca.php">';
-        echo '<label for="opis">Wpisz opis konkursu:</label>
-                        <textarea name="opis" id"opis" rows="5" cols="40"></textarea>';
+        echo '<form style="text-align:center;" id="ankieta_pracodawca" method="post" action="zapisz_konkurs_pracodawca.php">';
+        echo '<div>';
+        echo '<label style="font-size:30;" class="defaultFont" for="opis">Wpisz opis konkursu:</label>
+                        <textarea style="font-size:16px;" placeholder="Wpisz opis swojego konkursu." class="form-control" name="opis" id"opis" maxlength="50" rows="3" cols="40"></textarea>';
         echo '</br></br>';
+        echo '</div>';
+       
+        
         if ($result->num_rows > 0) {
             $nr = 1; // numeracja na stronie
             while ($row = $result->fetch_assoc()) {
                 // wyswietl tresc pytania stronie
-                echo $nr . ". " . $row["Tresc"] . "<br>";
+             
+                echo'<div class="defaultFont" style="border: solid 2px; border-radius: 25px; padding: 20px; margin-bottom: 10px;">';
+                echo '<div  class="row" style=" border-bottom: solid 1px;">';
+                echo '<div style="width:46%; "><b>'.$nr . '.' . $row["Tresc"] .'</b></div>';
                 // wyswietl wagi pytan i odpowiedzi
                 $nr ++;
                 generujPytanie($row["idPytania"], $conn);
-
-                echo "<br><br><br><br>";
+                echo '</div>';
+              
             }
             
             echo "</table>";
@@ -250,15 +289,20 @@ if ($_POST) {
         echo '<input type="hidden"id="nazwa_konkursu" name="nazwa_konkursu" value="' . $nazwa_konkursu . '">';
         echo '<input type="hidden"id="formularz_id" name="formularz_id" value="' . $formularz_id . '">';
         echo '<input type="hidden"id="insert_update" name="insert_update" value="INSERT">';
-        echo '<input type="submit" class="option-input" style="width: 100px;" value="Zatwierdź">';
+        echo '<input type="submit" class="btn btn-primary" style="width: 100px;" value="Zatwierdź">';
         echo '</form>';
         echo '</div>';
         
     }
 }
 echo '</div>';
+echo '</div></div>';
+echo'<div id="footer"> <div class="row"><div style="padding:20px; margin-left:30%; margin-right:5%;">Strona internetowa została stworzona w ramach pracy inżynierskiej 2018!
+            </div><b style="float:right; padding:20px;">Kontakt:</b><a style="  margin-right:auto;" href="www.facebook.pl/maciek.kubala.1" class="facebook fa fa-facebook"></a></div></div>';
+echo'</div>';
+echo'</body>
+</html>';
+
 $conn->close();
 ?>
 
-</body>
-</html>

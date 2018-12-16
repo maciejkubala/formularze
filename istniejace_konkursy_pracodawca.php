@@ -5,8 +5,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-<!-- Bootstrap CSS -->
-<link rel="stylesheet" type="text/css" href="style.css">
+	<link rel="stylesheet" type="text/css" href="style.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
 </head>
 <body>
     
@@ -14,9 +18,12 @@
     session_start();
 
     include 'logout.php';
-    include 'header.php';
+  //  include 'header.php';
     include 'polaczenie_do_bazy.php';
-
+    echo'<div style="display: block; padding-right:42%;">
+                <a class="btn btn-primary" style="color: white; float; right;"href="panel_pracodawca.php" role="button"><i class="fa fa-home"></i>PANEL PRACODAWCY</a>
+            </div>';
+    
     if (! empty($_POST)) {
 
 
@@ -58,45 +65,34 @@
         
 
         
-/*         $select_opis_stanowiska = 'SELECT Opis_Stanowiska
+         $select_opis_stanowiska = 'SELECT Opis_Stanowiska
                                      FROM konkursy_pracodawcow
                                     WHERE idKonkursy_Pracodawcow = ' . $konkurs_id . '';
                                     
         $result_opis_stanowiska = $conn->query($select_opis_stanowiska);
         
- */        
+         
         
-        echo'<h3>WYBRANY KONKURS: "'.$nazwa_konkursu.'"</h3>';
-        echo '<h4>Opis konkursu: '. $opis_stanowiska.'</h4>';
-        
-        
-        echo '<table style="width:50%">
-              <tr>
-              <td>
-               Maksymalna liczba punktów do zdobycia: '. $maks_punktow . ' -100%<br>
-              </td>
-              </tr>
-        
-              </table>';
-        
-        
-        
-        /* echo 'Maksymalna liczba punktów do zdobycia: '. $maks_punktow . ' -100%<br>';
-        echo 'TABELA NAJLEPSZYCH STUDENTÓW
-                <br/>
-                <br/>'; */
+        echo'<div class="defaultDiv defaultFont row" style="clear:both; width: 80%; margin-left: auto; margin-right: auto;">
+        <h3 style="width: 35%; border-right: solid 1px;">WYBRANY KONKURS:<br/> "'.$nazwa_konkursu.'"</h3>'; 
+        echo '<h4 style="width: 60%; text-align: left; margin-left: 5%;">Opis konkursu: '. $opis_stanowiska.'</h4>
+        <div style="text-align: center; border-top: solid 1px; width: 100%;">Maksymalna liczba punktów do zdobycia: <b>'. $maks_punktow . '</b> pkt.</div>
+        </div>';
         
         if ($result_lista_studentow->num_rows > 0) {
             $nr = 1;
-          echo '
-                <table style="width:50%;" >
+          echo '<div class="defaultDiv defaultFont">
+                <table class="table table-striped">
+                <thead>
                 <tr">
-                <th>MIEJSCE</th>
-                <th>Numer indeksu</th> 
-                <th>Wynik punktowy [pkt]</th>
-                <th>Wynik procentowy [%]</th> 
-                <th>CV studenta</th> 
-                </tr>';
+                <th scope="col">MIEJSCE</th>
+                <th scope="col">Numer indeksu</th> 
+                <th scope="col">Wynik punktowy [pkt]</th>
+                <th scope="col">Wynik procentowy [%]</th> 
+                <th scope="col">CV studenta</th> 
+                </tr>
+                </thead>
+                <tbody>';
            
             while ($row = $result_lista_studentow->fetch_assoc()) {
                 
@@ -107,12 +103,12 @@
             
                 echo '<tr>';
                 
-                echo '<td>';
-                echo '' . $nr . '.';
-                echo '</td>';
+                echo '<th scope="row">';
+                echo '' . $nr . '.'; //
+                echo '</th>';
                 
                 echo '<td>';
-                echo $nr_indeksu;
+                echo $nr_indeksu; 
                 echo '</td>';
                 
                 echo '<td>';
@@ -124,26 +120,25 @@
                 echo '</td>';
 
                 echo '<td>';
-                echo '<a target="_blank" rel="noopener noreferrer" href='.$cv. '>'.$cv.'</a>';
+                echo '<a target="_blank" rel="noopener noreferrer"style="color:black;" href='.$cv. '>'.$cv.'</a>';//
                 echo '</td>';
                 
                 echo '</tr>';
             
                 $nr++;
             }
-         echo '</table>';
+         echo '</tbody>
+         </table>
+         </div>';
         }
     } else {}
-    // przycisk powrotu do index.php
     
-        
-    echo ('<a href="panel_pracodawca.php" class="option-input" style="width: 150px; text-decoration: none;">Wroc do panelu pracodawcy</a><br/><br/><br/>');
+    echo'<div id="footer">
+            <a href=""
+        tu będą informacje/ kontakt do autora oraz że strona została zrobiona w ramach pracy inżynierskiej 2018 PWr!';
+    
+    echo'</div>';
     ?>
 
-    <!-- Optional JavaScript -->
-	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 </body>
 </html>

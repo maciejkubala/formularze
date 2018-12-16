@@ -5,8 +5,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" type="text/css" href="style.css">
+   <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
     <title>Sugestie</title>
   </head>
   <body>
@@ -168,32 +172,42 @@
             }
         }
     }
-
-    echo ("<h2>Ankietę zapisano prawidłowo!<br/></h2>");
+    echo'<div style="display: block; padding-right:42%; margin-right: 3px;">
+                <a class="btn btn-primary" style="color: white; float; right;"href="index.php" role="button"><i class="fa fa-home"></i> HOME</a>
+            </div>';
     
-    echo '<br>';
-    echo '<form method="post" action="sugestie.php">
-                        <label for="sugestia">Jesli masz jakies uwagi/pytania/sugestie napisz do nas!</label>
-                        <textarea name="sugestia" id"sugestia" rows="5" cols="40"></textarea>
-                        <input type="hidden" id="type" name="type" value="' . $_POST["type"]. '">
-                        <input type="hidden" id="user_id" name="user_id" value="' . $_POST["user_id"]. '">
+    echo '<div class="defaultDiv defaultFont"><h3>Ankietę zapisano prawidłowo!</h3></div>';
+    
+                      //  <input type="hidden" id="type" name="type" value="' . $_POST["type"]. '">
+                     //   <input type="hidden" id="user_id" name="user_id" value="' . $_POST["user_id"]. '">
+    
+    echo '<div class="row" style="width: 100%;">
+    <div class="defaultDiv" style="width: 35%; text-align: center;">
+        <form method="post" action="sugestie.php">
+                    <div class="form-group">
+                        <label style="" class="defaultFont" for="sugestia"><h4>Jesli masz jakies uwagi/pytania/sugestie napisz do nas!</h4></label>
+                        <textarea name="sugestia" id"sugestia" class="form-control" rows="5"></textarea>
+                    </div>
+                        <input type="hidden" id="type" name="type" value="">
+                        <input type="hidden" id="user_id" name="user_id" value="">
                         <br>
-                        <input type="submit" class="option-input" style="width: 100px;" value="Wyslij">
-                        </form>';
-    
-    echo '<br>';
-    echo '<br>';
-    echo '<br>';
-    echo 'Jesli chcesz wysłać CV załącz plik tutaj:';
+                        <input type="submit" class="btn btn-primary" style="width: 80%" value="Wyślij">
+                        </form>
+                        </div>';
+   
+    echo '<div class="defaultDiv defaultFont" style="width: 35%">
+        <h4>Jesli chcesz wysłać CV załącz plik tutaj:</h4>';
     
     include 'cv_student.php';
     
-    ?>
-
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    
+    echo '</div>
+    </div>';
+    echo '</div></div>';
+    echo'<div id="footer"> <div class="row"><div style="padding:20px; margin-left:30%; margin-right:5%;">Strona internetowa została stworzona w ramach pracy inżynierskiej 2018!
+            </div><b style="float:right; padding:20px;">Kontakt:</b><a style="  margin-right:auto;" href="www.facebook.pl/maciek.kubala.1" class="facebook fa fa-facebook"></a></div></div>';
+    echo'</div>';
+    ?>   
+    
   </body>
 </html>
