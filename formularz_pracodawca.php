@@ -1,7 +1,7 @@
 
 <!DOCTYPE html>
 <?php
-echo'<html>
+echo'<html lang="pl">
 <head>';
 include 'header.php';
 echo'</head>
@@ -69,15 +69,23 @@ function generujPytanie($v_idPytania, $v_connection)
         }
     }
 }
-
+//KONIEC FUNKCJI
 
 echo'<div style="display: block; padding-right:42%;">
-                <a class="btn btn-primary" style="color: white; float; right;"href="panel_pracodawca.php" role="button"><i class="fa fa-home"></i>PANEL PRACODAWCY</a>
+                <a class="btn btn-primary" style="color: white; float; right;"href="panel_pracodawca.php" role="button"><i class="fa fa-home"></i> PANEL PRACODAWCY</a>
             </div>';
 
-echo'<div class="defaultFont defaultDiv" style="display:">
-               <h3> Zaznacz wagi pytań i odpowiedzi, aby stworzyć swój własny konkurs</h3>';
-            
+echo'<div class="defaultFont defaultDiv">
+             <div style="">
+             <h4>System tworzenia konkursów, które pomogają w wyborze najlepszych kandydatów na stanowiska pracy!</h4>
+             <div style="border-top: solid 1px; text-align:center;">
+            <z style="font-weight:500;" >Zasady wypełnienia konkursu:</br></z>
+            <b>1.</b>Każde pytanie, oraz każdą odpowiedź do pytania trzeba ocenić w skali 0-10, gdzie ocena 10 jest oceną najwyższą.</br>
+             <b>2.</b>W polu tekstowym możesz wpisać jakiego stanowiska pracy dotyczy konkurs.</br>
+             <b>3.</b>W celu zapisania konkursu kliknij przycisk "Zatwierdź" znajdujący się po ostatnim pytaniu do wypełnienia.</div>';
+       echo'</div></div>';
+       echo'<div class="defaultDiv defaultFont" style="text-align: left;">';
+       
 
 
 // jesli konkurs istnieje to wczytujemy istniejacy, w przeciwnym wypadku tworzymy nowy konkurs
@@ -101,13 +109,7 @@ if ($_POST) {
     $opis=$row["Opis_form_prac"];
     
     
-    
-    
-                            
-                            echo'<div style="border-top: solid 1px;">'. $opis.'</div></div>';
-                            
-                            echo '<div class="defaultDiv">';
-                            
+   
     
                             
                             
@@ -122,17 +124,19 @@ if ($_POST) {
                                      
     $result = $conn->query($sql_konkurs_pracodawcy);
     
-    // jesli konkurs istnieje to wczytaj istniejący konkurs
+// jesli konkurs istnieje to wczytaj istniejący konkurs
     if ($result->num_rows > 0) {
 
-        // pobierz liste wag dla danego konkursu
+// pobierz liste wag dla danego konkursu
         $sql_wagi = 'SELECT distinct idKonkursy_Pracodawcow, NazwaKonkursu, Pracodawcy_idPracodawcy, idFormularze, idPytania, TrescPytania, WagaPytania 
                        FROM v_wagi_konkursu 
                       WHERE idFormularze = ' .$formularz_id .
                       ' AND NazwaKonkursu = "' . $nazwa_konkursu .
                      '" AND Pracodawcy_idPracodawcy = ' . $pracodawca_id . ';';
+        
         $result = $conn->query($sql_wagi);
         
+//obsługa błędów     
         if (! $result) {
             trigger_error('Invalid query: ' . $conn->error);
         }
@@ -152,12 +156,14 @@ if ($_POST) {
        
        $row = mysqli_fetch_assoc($result_opis);
        $opis = $row['Opis_Stanowiska'];
-        echo '<div>';
+       
+     
+       echo '<div>';
         echo '<form style="text-align:center;" id="ankieta_pracodawca" method="post" action="zapisz_konkurs_pracodawca.php" >';
-        echo '<label class  ="defaultFont" for="opis">Wpisz opis konkursu:</label>
+        echo '<label class  ="defaultFont" for="opis">Wpisz krótki opis stanowiska, którego dotyczy konkurs:</label>
                         <textarea class="form-control" name="opis" id="opis" maxlength="50" rows="5" cols="40">'.$opis.'</textarea>';
         echo '</br></br>';
-        echo '</div>';
+        echo '</div>'; 
                   
         
         
@@ -178,7 +184,7 @@ if ($_POST) {
                 // wyswietl wagi pytan i odpowiedzi
                 for ($i = 0; $i <= 10; $i ++) {
                     if ($i == $row["WagaPytania"]) {
-                        $checked = ' checked="checked"';
+                        $checked = 'checked="checked"';
                     } else {
                         $checked = '';
                     }
@@ -187,7 +193,7 @@ if ($_POST) {
                     
                       echo '<div class="custom-control custom-radio custom-control-inline">';
                 
-                echo '<input type="radio" class="custom-control-input" id="' . $v_idPytania . '.'.$i.'" name= "pytanie[' . $v_idPytania . ']"" value = "' . $i . '"' . $checked . '/>';
+                echo '<input type="radio" class="custom-control-input" id="' . $v_idPytania . '.'.$i.'" name= "pytanie[' . $v_idPytania . ']" value = "' . $i . '"' . $checked . '/>';
                 echo '<label class="custom-control-label" for="' . $v_idPytania . '.'.$i.'.">'.$i.'</label>';
                 
                 echo '</div>';
@@ -243,7 +249,7 @@ if ($_POST) {
         echo '<input type="hidden"id="nazwa_konkursu" name="nazwa_konkursu" value="' . $nazwa_konkursu . '">';
         echo '<input type="hidden"id="formularz_id" name="formularz_id" value="' . $formularz_id . '">';
         echo '<input type="hidden"id="insert_update" name="insert_update" value="UPDATE">';
-        echo '<input type="submit" class="option-input" style="width: 100px;" value="Zatwierdź">';
+        echo '<div style = "text-align:center;"><input type="submit" class="btn btn-primary" style="width: 100px;" value="Zatwierdź"></div>';
         echo '</form>';
         echo '</div>';
         
@@ -261,8 +267,8 @@ if ($_POST) {
         echo '<div>';
         echo '<form style="text-align:center;" id="ankieta_pracodawca" method="post" action="zapisz_konkurs_pracodawca.php">';
         echo '<div>';
-        echo '<label style="font-size:30;" class="defaultFont" for="opis">Wpisz opis konkursu:</label>
-                        <textarea style="font-size:16px;" placeholder="Wpisz opis swojego konkursu." class="form-control" name="opis" id"opis" maxlength="50" rows="3" cols="40"></textarea>';
+        echo '<label style="font-size:30;" class="defaultFont" for="opis">Wpisz krótki opis stanowiska, którego dotyczy konkurs:</label>
+                        <textarea style="font-size:16px;" placeholder="np.Stanowisko PHP JUNIOR DEVELOPER" class="form-control" name="opis" id"opis" maxlength="50" rows="3" cols="40"></textarea>';
         echo '</br></br>';
         echo '</div>';
        
@@ -294,15 +300,15 @@ if ($_POST) {
         echo '</div>';
         
     }
-}
+    }
 echo '</div>';
 echo '</div></div>';
-echo'<div id="footer"> <div class="row"><div style="padding:20px; margin-left:30%; margin-right:5%;">Strona internetowa została stworzona w ramach pracy inżynierskiej 2018!
-            </div><b style="float:right; padding:20px;">Kontakt:</b><a style="  margin-right:auto;" href="www.facebook.pl/maciek.kubala.1" class="facebook fa fa-facebook"></a></div></div>';
-echo'</div>';
+include 'przycisk.php';
+
+
+
 echo'</body>
 </html>';
-
 $conn->close();
 ?>
 

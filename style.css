@@ -55,8 +55,7 @@ body {
   
 .facebook {
   color:white;
-  border-radius:50px; 
-  text-decoration:none;
+  border-radius:15px; 
   background-color: #007bff;
   padding: 20px;
   font-size: 30px;
@@ -67,4 +66,16 @@ body {
   float:right;
 }
 
+.google {
+  color:white;
+  border-radius:15px; 
+  background-color: #dd4b39;
+  padding: 20px;
+  font-size: 30px;
+  width: 50px;
+  text-align: center;
+  text-decoration: none;
+  margin: 5px 2px;
+  float:right;
+}
 

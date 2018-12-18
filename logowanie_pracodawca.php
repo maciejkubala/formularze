@@ -1,20 +1,10 @@
-<!doctype html>
-<html lang="pl">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-	<link rel="stylesheet" type="text/css" href="style.css">
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    
-  </head>
-  <body>
-
+<!DOCTYPE html>
 <?php
+echo'<html lang="pl">
+<head>';
+include 'header.php';
+
+
 session_start();
 echo'<div style="display: block; padding-right:42%;">
                 <a class="btn btn-primary" style="color: white; float; right;"href="index.php" role="button"><i class="fa fa-home"></i> HOME</a>
@@ -108,9 +98,7 @@ if (isset($_SESSION['zalogowany'])==1) {
 }
 
 echo '</div></div>';
-echo'<div id="footer"> <div class="row"><div style="padding:20px; margin-left:30%; margin-right:5%;">Strona internetowa została stworzona w ramach pracy inżynierskiej 2018!
-            </div><b style="float:right; padding:20px;">Kontakt:</b><a style="  margin-right:auto;" href="www.facebook.pl/maciek.kubala.1" class="facebook fa fa-facebook"></a></div></div>';
-echo'</div>';
+include 'przycisk.php';
 ?>
 
 <?php 
@@ -125,7 +113,7 @@ if (isset($_SESSION['zalogowany'])==0 || $_SESSION['zalogowany']==false) :
 <?php endif;
  ?>    
  
-  </body>
-</html>
-
+   <?php echo'</head>
+<body>';
+    ?>
 <?php $conn->close(); ?>
