@@ -99,7 +99,7 @@ if (isset($_SESSION['zalogowany'])) {
     }
 }
 
-echo '</div></div>';
+echo '</div></div></br></br></br>';
 include 'przycisk.php';
 ?>
 

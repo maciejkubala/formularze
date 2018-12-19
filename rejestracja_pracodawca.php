@@ -116,7 +116,7 @@ if($przeszloWalidacje){
     echo'   <a href="logowanie_pracodawca.php" class="btn btn-primary">Idź do strony logowania</a>';
 }
    echo'   </div>';
-   echo '</div></div>';
+   echo '</div></div></br></br></br>';
    include 'przycisk.php';
 ?>
 	<?php 

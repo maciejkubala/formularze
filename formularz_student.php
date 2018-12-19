@@ -267,7 +267,7 @@ if ($result_sqlIdStudenta->num_rows > 0) {
      
      echo '</script>';
      
-     echo '</div></div>';
+     echo '</div></div></br></br></br>';
      include 'przycisk.php';
      
      
