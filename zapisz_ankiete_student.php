@@ -3,6 +3,7 @@
 echo'<html lang="pl">
 <head>';
 include 'header.php';
+echo'<title>Zapis ankiety</title>';
 echo'</head>
 <body>';
      session_start();

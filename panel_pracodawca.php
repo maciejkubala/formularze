@@ -3,6 +3,7 @@
 echo'<html lang="pl">
 <head>';
 include 'header.php';
+echo'<title>Panel pracodawcy</title>';
 echo'</head>
 <body>';
 

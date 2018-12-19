@@ -3,6 +3,7 @@
 echo'<html lang="pl">
 <head>';
 include 'header.php';
+echo'<title>Usunięcie konkursu</title>';
 echo'</head>
 <body>';
 

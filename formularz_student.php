@@ -4,7 +4,7 @@
 echo'<html lang="pl">
 <head>';
 include 'header.php';
-
+echo'<title>Wypełnianie ankiety</title>';
 
 
 session_start();

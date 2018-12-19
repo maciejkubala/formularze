@@ -3,7 +3,7 @@
 echo'<html lang="pl">
 <head>';
 include 'header.php';
-echo'<title>Rejestracja</title>';
+echo'<title>Rejestracja pracodawcy</title>';
 echo'</head>
 <body>';
 //include 'header.php';

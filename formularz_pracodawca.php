@@ -4,6 +4,7 @@
 echo'<html lang="pl">
 <head>';
 include 'header.php';
+echo'<title>Tworzenie/Edycja konkursu</title>';
 echo'</head>
 <body>';
 

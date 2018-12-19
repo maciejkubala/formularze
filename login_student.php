@@ -3,7 +3,7 @@
 echo'<html lang="pl">
 <head>';
 include 'header.php';
-
+echo'<title>Logowanie studenta</title>';
 
 //sprawdza poprawnosc indeksu 6 cyfr i same cyfry JAK TO DOKŁADNIE DZIAŁO
 echo'<script type="text/javascript">

@@ -7,7 +7,7 @@
     
 //plik css i bootstrap do obsługi grafiki
     include 'header.php';
-    
+    echo'<title>Strona Główna</title>';
 // rozpoczynam sesje w celu możliwosci korzystania ze zmiennych SESSION no i przede wszystkim wychwycenie osoby zalogowanej
        session_start();
        

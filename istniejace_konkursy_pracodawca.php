@@ -4,6 +4,7 @@
 echo'<html lang="pl">
 <head>';
 include 'header.php';
+echo'<title>Ranking studentów</title>';
 
     session_start();
 

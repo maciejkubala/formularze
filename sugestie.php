@@ -3,6 +3,7 @@
 echo'<html lang="pl">
 <head>';
 include 'header.php';
+echo'<title>Zapis sugestii</title>';
 echo'</head>
 <body>';
 
