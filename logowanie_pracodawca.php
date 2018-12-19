@@ -84,7 +84,8 @@ echo '<div></br><b  style=" font-weight: 400; display:inline-block; ">Nie posiad
 echo '</div>';
 echo '<div style="display:inline-block;"><a class="btn btn-primary" style=" display: inline-block; margin-top: 25px;" href="rejestracja_pracodawca.php">Rejestracja</a>';
 echo '</div>';
-if (isset($_SESSION['zalogowany'])==1) {
+
+if (isset($_SESSION['zalogowany'])) {
     if ($_SESSION['zalogowany']==true)
     {
     	
@@ -101,18 +102,6 @@ echo '</div></div>';
 include 'przycisk.php';
 ?>
 
-<?php 
-
-if (isset($_SESSION['zalogowany'])==0 || $_SESSION['zalogowany']==false) :
-
-?>
-
-
-
-
-<?php endif;
- ?>    
- 
    <?php echo'</head>
 <body>';
     ?>

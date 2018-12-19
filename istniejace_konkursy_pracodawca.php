@@ -11,7 +11,7 @@ include 'header.php';
   //  include 'header.php';
     include 'polaczenie_do_bazy.php';
     echo'<div style="display: block; padding-right:42%;">
-                <a class="btn btn-primary" style="color: white; float; right;"href="panel_pracodawca.php" role="button"><i class="fa fa-home"></i>PANEL PRACODAWCY</a>
+                <a class="btn btn-primary" style="color: white; float; right;"href="panel_pracodawca.php" role="button"><i class="fa fa-home"></i> PANEL PRACODAWCY</a>
             </div>';
     
     if (! empty($_POST)) {
@@ -35,7 +35,7 @@ include 'header.php';
         $opis_stanowiska =$row["Opis_Stanowiska"];
      
         
-        // lita studentow
+        // lista studentow
         $ilosc = $_POST['ilosc_osob'];
         
         $select_lista_studentow = 'SELECT Nr_Indeksu, konkurs_id, punkty_rekrutacyjne, Plik_Do_CV
@@ -123,11 +123,7 @@ include 'header.php';
         }
     } else {}
     
-    echo'<div id="footer">
-            <a href=""
-        tu będą informacje/ kontakt do autora oraz że strona została zrobiona w ramach pracy inżynierskiej 2018 PWr!';
-    
-    echo'</div>';
+    include 'przycisk.php';
     
     echo'</head>
 <body>';

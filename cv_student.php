@@ -17,12 +17,10 @@
 
         $TMP_NAME = $_FILES['Plik_Do_CV']['tmp_name'];
 
-        $SUBMITBUTTON = $_POST['submit'];
-
         $POSITION = STRPOS($NAME, ".");
 
         $FILEEXTENSION = SUBSTR($NAME, $POSITION + 1);
-
+//rozszerzenie na lowercase 
         $FILEEXTENSION = STRTOLOWER($FILEEXTENSION);
 
 

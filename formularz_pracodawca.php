@@ -127,19 +127,7 @@ if ($_POST) {
 // jesli konkurs istnieje to wczytaj istniejący konkurs
     if ($result->num_rows > 0) {
 
-// pobierz liste wag dla danego konkursu
-        $sql_wagi = 'SELECT distinct idKonkursy_Pracodawcow, NazwaKonkursu, Pracodawcy_idPracodawcy, idFormularze, idPytania, TrescPytania, WagaPytania 
-                       FROM v_wagi_konkursu 
-                      WHERE idFormularze = ' .$formularz_id .
-                      ' AND NazwaKonkursu = "' . $nazwa_konkursu .
-                     '" AND Pracodawcy_idPracodawcy = ' . $pracodawca_id . ';';
-        
-        $result = $conn->query($sql_wagi);
-        
-//obsługa błędów     
-        if (! $result) {
-            trigger_error('Invalid query: ' . $conn->error);
-        }
+
        
        $select_opis = 'select Opis_Stanowiska  from konkursy_pracodawcow
                              where Formularze_idFormularze = ' . $formularz_id . '
@@ -169,10 +157,23 @@ if ($_POST) {
         
         // wyswietl wagi pytan i odpowiedzi
         
+        // pobierz liste wag pytan dla danego konkursu
+        $sql_wagi = 'SELECT distinct idKonkursy_Pracodawcow, NazwaKonkursu, Pracodawcy_idPracodawcy, idFormularze, idPytania, TrescPytania, WagaPytania
+                       FROM v_wagi_konkursu
+                      WHERE idFormularze = ' .$formularz_id .
+                      ' AND NazwaKonkursu = "' . $nazwa_konkursu .
+                      '" AND Pracodawcy_idPracodawcy = ' . $pracodawca_id . ';';
+        
+        $result_sql_wagi = $conn->query($sql_wagi);
+        
+        //obsługa błędów
+        if (! $result_sql_wagi) {
+            trigger_error('Invalid query: ' . $conn->error);
+        }
        // echo '</div>';
-        if ($result->num_rows > 0) {
+        if ($result_sql_wagi->num_rows > 0) {
             $nr = 1; // numeracja na stronie
-            while ($row = $result->fetch_assoc()) {
+            while ($row = $result_sql_wagi->fetch_assoc()) {
                 echo'<div class="defaultFont" style="border: solid 2px; border-radius: 25px; padding: 20px; margin-bottom: 10px;">';
                 echo '<div  class="row" style=" border-bottom: solid 1px">';
                 echo '<div style="width:46%; "><b>'.$nr . '.' . $row["TrescPytania"] .'</b></div>';
@@ -181,8 +182,9 @@ if ($_POST) {
                 $konkurs_id = $row["idKonkursy_Pracodawcow"];
                 
                 $v_idPytania = $row["idPytania"];
-                // wyswietl wagi pytan i odpowiedzi
+                // wyswietl wagi pytan
                 for ($i = 0; $i <= 10; $i ++) {
+                    
                     if ($i == $row["WagaPytania"]) {
                         $checked = 'checked="checked"';
                     } else {
@@ -193,10 +195,10 @@ if ($_POST) {
                     
                       echo '<div class="custom-control custom-radio custom-control-inline">';
                 
-                echo '<input type="radio" class="custom-control-input" id="' . $v_idPytania . '.'.$i.'" name= "pytanie[' . $v_idPytania . ']" value = "' . $i . '"' . $checked . '/>';
-                echo '<label class="custom-control-label" for="' . $v_idPytania . '.'.$i.'.">'.$i.'</label>';
+                    echo '<input type="radio" class="custom-control-input" id="' . $v_idPytania . '.'.$i.'" name= "pytanie[' . $v_idPytania . ']" value = "' . $i . '"' . $checked . '/>';
+                    echo '<label class="custom-control-label" for="' . $v_idPytania . '.'.$i.'.">'.$i.'</label>';
                 
-                echo '</div>';
+                    echo '</div>';
                 
                      
                 }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<?php
+<?php 
 echo'<html lang="pl">
 <head>';
 include 'header.php';
@@ -12,17 +12,18 @@ echo'</head>
     include 'logout.php';
    
     //znajdz id studenta o numerze inkdeksu z session
-
+// nie wpisujemy 2 razy tego samego nr indeksu
     $sqlIdStudenta = "SELECT idStudenci FROM studenci WHERE Nr_Indeksu = ".$_SESSION['user_id'];
     $resultIdStudenta = $conn->query($sqlIdStudenta);
     
+// fetch_assoc() czy mysqli_fetch_assoc
     if ($resultIdStudenta->num_rows > 0) {
         while ($row = $resultIdStudenta->fetch_assoc()) {
            
               $id=$row["idStudenci"];     
         }
     }
-
+//studenta nie ma jeszcze w bazie 
     if(empty($id)){
         
         $select_id_student ='INSERT INTO `studenci` (`Nr_Indeksu`, `Data_Wypelnienia`) VALUES ('.$_SESSION['user_id'].', NOW());';
@@ -43,18 +44,15 @@ echo'</head>
         }
     }
 
-    
+//funkcja pobierająca id pytania z tabeli pytania z formularzy 
     function pobierz_id_pytania_z_formularzy($v_id_pytania, $v_id_formularza, $v_connection) {
-        
+
         $sql_id_pytania_z_formularzy = "SELECT idPytania_Z_Formularzy 
                                           FROM pytania_z_formularzy 
                                          WHERE Formularze_idFormularze = " . $v_id_formularza . "
                                           AND Pytania_idPytania = " . $v_id_pytania;
-        
-//         echo '$sql_id_pytania_z_formularzy = ' . $sql_id_pytania_z_formularzy;
-//         echo '<br>';
-        
-        // wykonac sql
+            
+// wykonac sql
         $result_id_pytania_z_formularzy = $v_connection->query($sql_id_pytania_z_formularzy);
         $row = mysqli_fetch_assoc($result_id_pytania_z_formularzy);
         return $row['idPytania_Z_Formularzy'];
@@ -66,27 +64,20 @@ echo'</head>
         if(isset($_POST["formularz_id"])) {
             $formularz_id = $_POST["formularz_id"];
         }
-        //echo("Student: ".$id."<br/>");
+        
         //zapisz odpowiedzi studenta z ankiety
+        //iteruj po wszystkich parametrach post
         foreach($_POST as $key => $value) {
-//              echo '<br>';
-//              echo '<br>';
-//              echo("key: ".$key." value: ".$value."<br/>");
             
-//             if((substr($key, 0, 4) == "inne") && is_array($value)) {
-//                 echo 'substr($key, 0, 4) == "inne") && is_array($value)';
-//                 echo '<br>';
-//                 // pomiń checkbox z pytania inne
-//                 // pytanie inne bedzie zapisane z textboxa
-//             }
             if($key == "formularz_id" || $key == "type" || $key == "user_id") {
-                // pomiń parametr formularz_id
+                // pomiń powyższe parametry
             }
+            //wchodzi dla inne
             elseif((substr($key, 0, 4) == "inne")) {
 //                 echo("INNE key: ".$key." value: ".$value."<br/>");
 //                  echo '<br>';
 //                 echo 'inne';
-                //INNE
+				// wyciągnięcie id pytania inne12odp123 inne12 - inne = 12                
                 $id_pytania = substr($key, 4, strpos($key, 'o') - 4);
                 
                 //pobierz id pytania przypisanego do formularza
@@ -94,9 +85,11 @@ echo'</head>
 
 //                 echo 'id_pytania = ' . $id_pytania;
 //                 echo '<br>';
+                //wyciągnięcie odpowiedzi  inne123odp156= 13   - inne123odp =10 - zwróc 3 ostatnie cyfry
                 $id_odpowiedzi = substr($key, strpos($key, 'o') + 3, strlen($key) - (strpos($key, 'o') + 3));
 //                 echo 'id_odpowiedzi = ' . $id_odpowiedzi;
-                $sql_insert = 'INSERT INTO odpowiedzi_studentow (`Studenci_idStudenci`, `Pytania_Z_Formularzy_idPytania_Z_Formularzy`, `Mozliwe_Odpowiedzi_idMozliwe_Odpowiedzi`, `Odpowiedz_tekstowa`)
+                $sql_insert = 'INSERT INTO odpowiedzi_studentow (`Studenci_idStudenci`, `Pytania_Z_Formularzy_idPytania_Z_Formularzy`, `Mozliwe_Odpowiedzi_idMozliwe_Odpowiedzi`,
+                             `Odpowiedz_tekstowa`)
                                 VALUES('.$id.','.$id_pytania_z_formularzy.', ' . $id_odpowiedzi . ', "'.$value.'")';
 //                  echo '<br>';
 //                  echo $sql_insert;
@@ -117,9 +110,9 @@ echo'</head>
                 //pobierz id pytania przypisanego do formularza
                 $id_pytania_z_formularzy = pobierz_id_pytania_z_formularzy($key, $formularz_id, $conn);
                 
-                //CHECKBOXY
+                //dla kaædej wartosci  z tablicy value // rozbij tablice na pojedyncze odpowiedzi wpisz do tabeli
                 foreach($value as $odpowiedz){
-                    
+                    //omieniecie podwojonego zapisywania inne
                     if ((substr($odpowiedz, 0, 4) != "inne")) {
                         $sql_insert = 'INSERT INTO odpowiedzi_studentow (`Studenci_idStudenci`, `Pytania_Z_Formularzy_idPytania_Z_Formularzy`, `Mozliwe_Odpowiedzi_idMozliwe_Odpowiedzi`)
                                 VALUES('.$id.','.$id_pytania_z_formularzy.','.$odpowiedz.')';
